@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vaultlink</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f1f1f1;
+    }
+
+    header {
+      background-color: #003366;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      margin: 0;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 20px;
+    }
+
+    .hero {
+      background-color: #e0eafc;
+      padding: 4rem 2rem;
+      text-align: center;
+    }
+
+    .hero h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .services {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 2rem;
+      background-color: white;
+    }
+
+    .service {
+      background-color: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      margin: 1rem;
+      padding: 2rem;
+      width: 250px;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    footer {
+      background-color: #003366;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+      position: relative;
+      bottom: 0;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Vaultlink</h1>
+    <nav>
+      <a href="#">Home</a>
+      <a href="#">Services</a>
+      <a href="loginPage.html">Login</a>
+      <a href="#">Contact</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h2>Welcome to Vaultlink</h2>
+    <p>Your trusted partner in financial security.</p>
+  </section>
+
+  <section class="services">
+    <div class="service">
+      <h3>Open an Account</h3>
+      <p>Start saving and managing your money today with our easy online account setup.</p>
+    </div>
+    <div class="service">
+      <h3>Secure Online Banking</h3>
+      <p>Access your account anytime, anywhere with our secure banking platform.</p>
+    </div>
+    <div class="service">
+      <h3>24/7 Support</h3>
+      <p>Our dedicated team is here to help you anytime you need us.</p>
+    </div>
+  </section>
+
+  <section class="register" id="register">
+    <h2 style="text-align:center; margin-top: 2rem;">Create an Account</h2>
+    <form style="max-width: 500px; margin: 2rem auto; background-color: white; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+      <label for="fullname">Full Name</label><br>
+      <input type="text" id="fullname" name="fullname" required style="width: 100%; padding: 0.5rem; margin-bottom: 1rem;"><br>
+  
+      <label for="email">Email Address</label><br>
+      <input type="email" id="email" name="email" required style="width: 100%; padding: 0.5rem; margin-bottom: 1rem;"><br>
+  
+      <label for="password">Password</label><br>
+      <input type="password" id="password" name="password" required style="width: 100%; padding: 0.5rem; margin-bottom: 1rem;"><br>
+  
+      <label for="confirm">Confirm Password</label><br>
+      <input type="password" id="confirm" name="confirm" required style="width: 100%; padding: 0.5rem; margin-bottom: 1.5rem;"><br>
+  
+      <button type="submit" style="width: 104%; padding: 0.5rem; background-color: #003366; color: white; border: none; border-radius: 4px;">Register</button>
+    </form>
+  </section>
+  
+
+  <footer>
+    &copy; 2025 Vaultlink. All rights reserved.
+  </footer>
+
+  <script>
+    document.querySelector("form").addEventListener("submit", function(e) {
+      const pw = document.getElementById("password").value;
+      const confirm = document.getElementById("confirm").value;
+      if (pw !== confirm) {
+        alert("Passwords do not match!");
+        e.preventDefault(); // stop the form from submitting
+      }
+    });
+  </script>
+  
+</body>
+</html>
