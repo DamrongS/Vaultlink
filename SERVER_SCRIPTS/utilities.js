@@ -12,15 +12,18 @@ String.prototype.hashEncode = function() {
 }
 
 // Save the user data (simulated localStorage)
-function saveUser(user) {
+async function saveUser(user) {
     const users = JSON.parse(localStorage.getItem("users")) || [];
     users.push(user);
     localStorage.setItem("users", JSON.stringify(users));
+    console.log("User saved successfully:", user);
 }
 
 // Get users from localStorage
 function getUsers() {
-    return JSON.parse(localStorage.getItem("users")) || [];
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+    console.log("Retrieved users:", users);
+    return users;
 }
 
 // Check if a user already exists
@@ -28,3 +31,6 @@ function userExists(email) {
     const users = getUsers();
     return users.some(user => user.email === email);
 }
+
+const users = getUsers();
+console.log("User object structure:", JSON.stringify(users[0], null, 2));

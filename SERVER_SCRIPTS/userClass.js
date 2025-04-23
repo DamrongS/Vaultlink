@@ -32,13 +32,14 @@ class User {
   
     static login(username, password) {
       const user = User.findByUsername(username);
-      if (user && user.password === password.hashEncode()) {
-        // Store user id in localStorage to track the logged-in user
-        localStorage.setItem("loggedInUser", user.id);
-        return user;
+      if (password === user.password) {
+        console.log("Login successful. Storing user ID:", user.id);
+        localStorage.setItem('loggedInUserId', user.id);
+        window.location.href = 'vaultlinkDashboard.html';
+      } else {
+          showError(passwordElement, 'Incorrect password.');
+          return;
       }
-      //alert("Invalid credentials");
-      return null;
     }
   
     static logout() {
@@ -47,8 +48,11 @@ class User {
     }
   
     static getLoggedInUser() {
-      const loggedInUserId = localStorage.getItem("loggedInUser");
-      return loggedInUserId ? User.getAllUsers().find(user => user.id == loggedInUserId) : null;
-    }
+      const loggedInUserId = localStorage.getItem("loggedInUserId");
+      if (!loggedInUserId) return null;
+      console.log("Retrieved userId:", loggedInUserId);
+      return User.getAllUsers().find(user => user.id == loggedInUserId);
   }
+  
+}
   

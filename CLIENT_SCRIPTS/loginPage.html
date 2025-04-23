@@ -60,6 +60,12 @@
       background-color: #0051a3;
     }
 
+    .error-message {
+      color: red;
+      margin-top: 5px;
+      display: block;
+  }
+
     .register-link {
       margin-top: 1rem;
       text-align: center;
@@ -81,6 +87,8 @@
 
           <label for="password">Password</label>
           <input type="password" id="password" name="password" required />
+
+          <div class="error-message"></div>
 
           <button type="submit" id="loginButton">Login</button>
       </form>

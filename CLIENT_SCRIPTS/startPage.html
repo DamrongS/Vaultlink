@@ -107,9 +107,13 @@
   <section class="register" id="register">
     <h2 style="text-align:center; margin-top: 2rem;">Create an Account</h2>
     <form style="max-width: 500px; margin: 2rem auto; background-color: white; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+      
       <label for="fullname">Full Name</label><br>
       <input type="text" id="fullname" name="fullname" required style="width: 100%; padding: 0.5rem; margin-bottom: 1rem;"><br>
   
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" required style="width: 100%; padding: 0.5rem; margin-bottom: 1rem;"/>
+
       <label for="email">Email Address</label><br>
       <input type="email" id="email" name="email" required style="width: 100%; padding: 0.5rem; margin-bottom: 1rem;"><br>
   
@@ -126,17 +130,6 @@
   <footer>
     &copy; 2025 Vaultlink. All rights reserved.
   </footer>
-
-  <script>
-    document.querySelector("form").addEventListener("submit", function(e) {
-      const pw = document.getElementById("password").value;
-      const confirm = document.getElementById("confirm").value;
-      if (pw !== confirm) {
-        //alert("Passwords do not match!");
-        e.preventDefault(); // stop the form from submitting
-      }
-    });
-  </script>
 
   <script src="../SERVER_SCRIPTS/utilities.js"></script>
   <script src="../SERVER_SCRIPTS/register.js"></script>
