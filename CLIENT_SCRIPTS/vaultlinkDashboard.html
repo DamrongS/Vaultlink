@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vaultlink - Dashboard</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f4f6f9;
+      display: flex;
+    }
+
+    .sidebar {
+      width: 250px;
+      background-color: #003366;
+      color: white;
+      height: 100vh;
+      padding-top: 1rem;
+      position: fixed;
+    }
+
+    .sidebar h2 {
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: 1.5rem;
+    }
+
+    .sidebar a {
+      display: block;
+      padding: 0.75rem 1.5rem;
+      color: white;
+      text-decoration: none;
+      transition: background-color 0.2s;
+      border-left: 4px solid transparent;
+    }
+
+    .sidebar a:hover {
+      background-color: #0051a3;
+    }
+
+    .sidebar a.active {
+      background-color: #0051a3;
+      border-left: 4px solid #ffcc00;
+    }
+
+    .divider {
+      border-top: 1px solid rgba(255, 255, 255, 0.3);
+      margin: 1rem 0;
+    }
+
+    .main {
+      margin-left: 250px;
+      padding: 2rem;
+      flex-grow: 1;
+    }
+
+    .main h1 {
+      color: #003366;
+    }
+
+    .tab-content {
+      margin-top: 1.5rem;
+      background: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .valuta-section {
+        max-width: 400px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem 1rem;
+        align-items: center;
+      }
+      
+      .valuta-section label {
+        grid-column: span 2;
+        font-weight: bold;
+        margin-top: 0.5rem;
+      }
+      
+      .valuta-section input,
+      .valuta-section select {
+        padding: 0.4rem 0.6rem;
+        font-size: 0.9rem;
+        width: 100%;
+      }
+      
+      .valuta-section button {
+        grid-column: span 2;
+        padding: 0.35rem;
+        font-size: 1rem;
+        background-color: #003366;
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 4px;
+        width: 48%;
+      }
+      
+      .valuta-section button:hover {
+        background-color: #0051a3;
+      }      
+      
+      .valuta-section #result {
+        grid-column: span 2;
+        margin-top: 0.75rem;
+        font-weight: bold;
+        color: #003366;
+      }
+
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <h2>Vaultlink</h2>
+    <a href="#overview" class="active">Overview</a>
+    <a href="#inbox">Inbox</a>
+    <a href="#usage">Usage</a>
+    <a href="#subscription">Subscription</a>
+    <a href="#cards">Cards</a>
+    <div class="divider"></div>
+    <a href="#investments">Investments</a>
+    <a href="#housing">Housing</a>
+    <a href="#pension">Pension</a>
+    <a href="#insurance">Insurance</a>
+    <a href="#car">Car</a>
+    <div class="divider"></div>
+    <a href="#worth">Worth</a>
+    <a href="#valuta">Valuta</a>
+    <div class="divider"></div>
+    <a href="#profile">Profile</a>
+    <a href="#settings">Settings</a>
+    <a href="#contact">Contact</a>
+  </div>
+
+  <div class="main">
+    <h1>Welcome to your Dashboard</h1>
+    <div class="tab-content">
+      <p>Select a tab from the sidebar to view its contents.</p>
+    </div>
+  </div>
+
+  <script>
+    const links = document.querySelectorAll('.sidebar a');
+    const content = document.querySelector('.tab-content');
+
+    const tabContents = {
+      overview: `<h2>Overview</h2><p>Here you can see a summary of your account status, recent transactions, and financial highlights.</p>`,
+      inbox: `<h2>Inbox</h2><p>Check your messages, notifications, and alerts here.</p>`,
+      usage: `<h2>Usage</h2><p>Track your expenses, payment history, and usage statistics over time.</p>`,
+      subscription: `<h2>Subscription</h2><p>Manage your active subscriptions, billing info, and renewal preferences.</p>`,
+      cards: `<h2>Cards</h2><p>View, manage, and block your cards here.</p>`,
+      investments: `<h2>Investments</h2><p>Review your stocks, mutual funds, and performance analytics.</p>`,
+      housing: `<h2>Housing</h2><p>Manage your mortgages, rent payments, and home valuation tools.</p>`,
+      pension: `<h2>Pension</h2><p>View pension contributions, growth forecasts, and plan options.</p>`,
+      insurance: `<h2>Insurance</h2><p>Track your active policies, claims, and coverage details.</p>`,
+      car: `<h2>Car</h2><p>Manage car loans, insurance, and vehicle-related expenses.</p>`,
+      worth: `<h2>Worth</h2><p>Get an overview of your total net worth and asset distribution.</p>`,
+      valuta: `<h2>Valuta</h2>
+  <div class="valuta-section">
+    <label for="amount">Amount:</label>
+    <input type="number" id="amount" placeholder="Enter amount" />
+
+    <label for="fromCurrency">From:</label>
+    <select id="fromCurrency">
+      <option value="USD">USD</option>
+      <option value="EUR">EUR</option>
+      <option value="DKK">DKK</option>
+    </select>
+
+    <label for="toCurrency">To:</label>
+    <select id="toCurrency">
+      <option value="EUR">EUR</option>
+      <option value="USD">USD</option>
+      <option value="DKK">DKK</option>
+    </select>
+
+    <button onclick="convertCurrency()">Convert</button>
+    <p id="result"></p>
+  </div>`,
+
+      profile: `<h2>Profile</h2><p>Update your personal information, ID verification, and preferences.</p>`,
+      settings: `<h2>Settings</h2><p>Control security, notifications, and platform behavior.</p>`,
+      contact: `<h2>Contact</h2><p>Reach our support team or find office contact details.</p>`
+    };
+
+    links.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        links.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+
+        const section = link.getAttribute('href').substring(1);
+        content.innerHTML = tabContents[section] || `<h2>${section}</h2><p>No content available yet.</p>`;
+      });
+    });
+
+    async function convertCurrency() {
+      const amount = document.getElementById("amount").value;
+      const from = document.getElementById("fromCurrency").value;
+      const to = document.getElementById("toCurrency").value;
+      const resultEl = document.getElementById("result");
+
+      if (!amount || isNaN(amount)) {
+        resultEl.textContent = "Please enter a valid amount.";
+        return;
+      }
+
+      try {
+        const res = await fetch(`https://api.exchangerate-api.com/v4/latest/${from}`);
+        const data = await res.json();
+        const rate = data.rates[to];
+        const converted = (amount * rate).toFixed(2);
+        resultEl.textContent = `${amount} ${from} = ${converted} ${to}`;
+      } catch (error) {
+        resultEl.textContent = "Error fetching exchange rate.";
+      }
+    }
+  </script>
+</body>
+</html>
