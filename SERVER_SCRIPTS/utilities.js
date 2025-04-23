@@ -14,7 +14,7 @@ String.prototype.hashEncode = function()
         h2 = (h2 * 0x85ebca6b) >>> 0;
     }
 
-    let hashPassword = (h1 ^h2).toString(2).pad(32, '0');
+    let hashPassword = (h1 ^h2).toString(2).padStart(32, '0');
     return hashPassword;
 }
 
