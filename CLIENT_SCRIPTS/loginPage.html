@@ -60,6 +60,12 @@
       background-color: #0051a3;
     }
 
+    .error-message {
+      color: red;
+      margin-top: 5px;
+      display: block;
+  }
+
     .register-link {
       margin-top: 1rem;
       text-align: center;
@@ -67,26 +73,31 @@
     }
 
     .register-link a {
-      color: #003366;
+      color: #003366;;
       text-decoration: none;
     }
   </style>
 </head>
 <body>
   <div class="login-container">
-    <h2>Login to Vaultlink</h2>
-    <form>
-      <label for="email">Email</label>
-      <input type="email" id="email" name="email" required />
+      <h2>Login to Vaultlink</h2>
+      <form id="loginForm">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required />
 
-      <label for="password">Password</label>
-      <input type="password" id="password" name="password" required />
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required />
 
-      <button type="submit">Login</button>
-    </form>
-    <div class="register-link">
-      Don’t have an account? <a href="register.html">Register here</a>
-    </div>
+          <div class="error-message"></div>
+
+          <button type="submit" id="loginButton">Login</button>
+      </form>
+      <div class="register-link">
+        Don’t have an account? <a href="register.html">Register here</a>
+      </div>
   </div>
+
+  <script src="../SERVER_SCRIPTS/utilities.js"></script>
+  <script src="../SERVER_SCRIPTS/login.js"></script>
 </body>
 </html>
