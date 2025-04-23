@@ -38,6 +38,7 @@
 
     input[type="text"],
     input[type="password"],
+    input[type="confirm"],
     input[type="email"] {
       width: 100%;
       padding: 0.5rem;
@@ -61,13 +62,13 @@
       background-color: #0051a3;
     }
 
-    .login-link {
+    .register-link {
       margin-top: 1rem;
       text-align: center;
       font-size: 0.9rem;
     }
 
-    .login-link a {
+    .register-link a {
       color: #003366;
       text-decoration: none;
     }
@@ -75,28 +76,31 @@
 </head>
 <body>
   <div class="register-container">
-    <h2>Create a Vaultlink Account</h2>
-    <form>
-      <label for="username">Username</label>
-      <input type="text" id="username" name="username" required />
+      <h2>Create a Vaultlink Account</h2>
+      <form id="registerForm">
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" required />
 
-      <label for="password">Password</label>
-      <input type="password" id="password" name="password" required />
+          <label for="fullname">Full Name</label>
+          <input type="text" id="fullname" name="fullname" required />
 
-      <label for="fullname">Full Name</label>
-      <input type="text" id="fullname" name="fullname" required />
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required />
 
-      <label for="cpr">CPR Number</label>
-      <input type="text" id="cpr" name="cpr" required />
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required />
 
-      <label for="email">Email</label>
-      <input type="email" id="email" name="email" required />
+          <label for="confirm">Confirm Password</label>
+          <input type="password" id="confirm" name="confirm" required />
 
-      <button type="submit">Register</button>
-    </form>
-    <div class="login-link">
-      Already have an account? <a href="loginPage.html">Log in here</a>
-    </div>
+          <button type="submit" id="registerButton">Register</button>
+      </form>
+      <div class="register-link">
+        Already have an account? <a href="loginPage.html">Login here</a>
+      </div>
   </div>
+
+  <script src="../SERVER_SCRIPTS/utilities.js"></script>
+  <script src="../SERVER_SCRIPTS/register.js"></script>
 </body>
 </html>

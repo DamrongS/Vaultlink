@@ -1,6 +1,6 @@
 class User {
-    constructor(username, password, name, email) {
-      this.id = Date.now();
+    constructor(id, username, password, name, email) {
+      this.id = id;
       this.username = username;
       this.password = password.hashEncode(); // hashed
       this.profile = { name, email };
@@ -13,12 +13,12 @@ class User {
     save() {
       const users = JSON.parse(localStorage.getItem("users")) || [];
       if (users.find(u => u.username === this.username)) {
-        alert("Username already taken.");
+        //alert("Username already taken.");
         return false;
       }
       users.push(this);
       localStorage.setItem("users", JSON.stringify(users));
-      alert("User registered!");
+      //alert("User registered!");
       return true;
     }
   
@@ -37,13 +37,13 @@ class User {
         localStorage.setItem("loggedInUser", user.id);
         return user;
       }
-      alert("Invalid credentials");
+      //alert("Invalid credentials");
       return null;
     }
   
     static logout() {
       localStorage.removeItem("loggedInUser");
-      alert("Logged out successfully");
+      //alert("Logged out successfully");
     }
   
     static getLoggedInUser() {
