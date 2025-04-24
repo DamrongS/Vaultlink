@@ -1,13 +1,14 @@
 class User {
-    constructor(id, username, password, name, email) {
+    constructor(id, username, password, name, email, registeredAt) {
       this.id = id;
       this.username = username;
       this.password = password.hashEncode(); // hashed
       this.profile = { name, email };
       this.inbox = [];
-      this.accounts = { /* your accounts data structure */ };
+      this.accounts = { Main : {} };
       this.settings = { darkMode: false, language: "en" };
       this.contact = { supportMessages: [] };
+      this.registeredAt = registeredAt;
     }
   
     save() {

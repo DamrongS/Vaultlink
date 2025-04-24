@@ -25,7 +25,8 @@ document.addEventListener('DOMContentLoaded', function() {
             email: email.value,
             password: password.value,
             name: name.value,
-            confirmPassword: confirmPassword.value
+            confirmPassword: confirmPassword.value,
+            registeredAt: Date.now(),
         });
 
         // Validation
@@ -59,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Create new user object
         const newUser = {
-            id: Date.now(),
+            id: GenerateUserId(),
             username: username.value,
             password: hashedPassword,
             name: name.value,
@@ -67,7 +68,8 @@ document.addEventListener('DOMContentLoaded', function() {
             profile: { name: name.value, email: email.value },
             accounts: {},
             settings: { darkMode: false, language: "en" },
-            contact: { supportMessages: [] }
+            contact: { supportMessages: [] },
+            registeredAt: Date.now()
         };
 
         console.log("New user object:", newUser);
@@ -100,4 +102,34 @@ function showError(input, message) {
 
     errorMessage.textContent = message;
     formGroup.style.border = '1px solid red';
+}
+
+function GenerateUserId() {
+    const min = 1;
+    const max = 1000000;
+    let id, padded, fullId;
+  
+    do {
+      // 1. Generate random integer
+      const randomInt = Math.floor(Math.random() * (max - min + 1)) + min;
+      // 2. Zero‑pad to 7 digits and prefix with '#'
+      padded = String(randomInt).padStart(7, '0');
+      fullId = `#${padded}`;
+      // loop until we find one that isn’t in use
+    } while (ValidateUserId(fullId));
+  
+    return fullId;
+}
+
+/**
+ * Checks whether the given user ID already exists.
+ * Replace the body of this function with your actual lookup logic.
+ * E.g., querying a database or checking localStorage.
+ *
+ * @param {string} id — the candidate ID (e.g. "#0000123")
+ * @returns {boolean} true if the ID is already taken, false otherwise
+ */
+function ValidateUserId(id) {
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    return users.some(u => u.id === id);
 }

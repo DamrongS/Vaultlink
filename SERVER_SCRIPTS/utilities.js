@@ -15,8 +15,15 @@ String.prototype.hashEncode = function()
     }
 
     let hashPassword = (h1 ^h2).toString(2).padStart(32, '0');
-    return hashPassword;
+    return binaryToAscii(hashPassword);
 }
+
+function binaryToAscii(binStr) {
+    return binStr
+      .match(/.{1,8}/g) // split into 8‑bit chunks
+      .map(byte => String.fromCharCode(parseInt(byte, 2)))
+      .join('');
+  }
 
 // Save the user data (simulated localStorage)
 async function saveUser(user) {

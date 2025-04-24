@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vaultlink - User List</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      background-color: #f4f7fa;
+    }
+    h2 {
+      color: #003366;
+      text-align: center;
+    }
+    table {
+      width: 100%;
+      max-width: 800px;
+      margin: 1.5rem auto;
+      border-collapse: collapse;
+      background-color: white;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    th, td {
+      padding: 0.75rem;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+    th {
+      background-color: #003366;
+      color: white;
+    }
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+    .no-users {
+      text-align: center;
+      margin-top: 2rem;
+      color: #555;
+    }
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 1rem;
+    }
+    .back-link a {
+      color: #003366;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Registered Users</h2>
+  <div id="userTableContainer"></div>
+
+  <div class="back-link">
+    <a href="../CLIENT_SCRIPTS/startPage.html">← Back to Home</a>
+  </div>
+
+  <script>
+    // Fetch users array from localStorage (or empty)
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    const container = document.getElementById('userTableContainer');
+
+    if (users.length === 0) {
+      container.innerHTML = '<p class="no-users">No users registered yet.</p>';
+    } else {
+      // Build table
+      let html = '<table><thead><tr>'
+        + '<th>#</th><th>Full Name</th><th>Email</th><th>Accounts</th></th><th>Registered At</th>'
+        + '</tr></thead><tbody>';
+
+      users.forEach((u, i) => {
+        html += '<tr>'
+          + `<td>${i + 1}</td>`
+          + `<td>${u.name}</td>`
+          + `<td>${u.email}</td>`
+          + `<td>${u.accounts.length}</td>`
+          + `<td>${new Date(u.registeredAt).toLocaleString()}</td>`
+          + '</tr>';
+      });
+
+      html += '</tbody></table>';
+      container.innerHTML = html;
+    }
+  </script>
+</body>
+</html>
