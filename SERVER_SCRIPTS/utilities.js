@@ -68,4 +68,4 @@ function userExists(email) {
 }
 
 const users = getUsers();
-console.log("User object structure:", JSON.stringify(users[0], null, 2));
+//console.log("User object structure:", JSON.stringify(users[0], null, 2));

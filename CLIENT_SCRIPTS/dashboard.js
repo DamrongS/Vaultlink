@@ -15,9 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     console.log("User retrieved:", user);
 
-    if (user) {
-        displayUserInfo(user);
-    } else {
+    if (!user) {
         console.error("Failed to retrieve user data");
         alert('An error occurred while loading your data. Please try again.');
         window.location.href = 'loginPage.html';
@@ -31,15 +29,15 @@ function displayUserInfo(user) {
         <p><strong>Name:</strong> ${user.profile.name}</p>
         <p><strong>Email:</strong> ${user.email}</p>
         <p><strong>ID:</strong> ${user.id}</p>
-        
+
         <h3>User Settings</h3>
         <p><strong>Dark Mode:</strong> ${user.settings.darkMode ? 'Enabled' : 'Disabled'}</p>
         <p><strong>Language:</strong> ${user.settings.language}</p>
-        
+
         <h3>Profile</h3>
         <p><strong>Name:</strong> ${user.profile.name}</p>
         <p><strong>Email:</strong> ${user.email}</p>
-        
+
         <button onclick="logoutUser()">Logout</button>
     `;
 }

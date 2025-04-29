@@ -4,7 +4,7 @@ class User {
       this.password = password.hashEncode(); // hashed
       this.profile = { name, email };
       this.inbox = [];
-      this.accounts = { Main : { id : "#000001", name : name, balance : 0.00, createdAt : Date.now(), locked : false, transactions : [{ type: "deposit", amount: 0, date: Date.now(), description: "Initial deposit" }] } };
+      this.accounts = { Main : { id : "#000001", name : name, balance : 0.00, createdAt : Date.now(), locked : false, transactions : [{ type: "deposit", amount: 0, date: Date.now(), description: "Initial deposit" }], cards: {} } };
       this.settings = { darkMode: false, language: "en" };
       this.contact = { supportMessages: [] };
       this.registeredAt = registeredAt;
