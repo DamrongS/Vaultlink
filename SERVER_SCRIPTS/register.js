@@ -14,14 +14,12 @@ document.addEventListener('DOMContentLoaded', function() {
     registerButton.addEventListener('click', async function(event) {
         event.preventDefault();
 
-        const username = document.getElementById("username");
         const email = document.getElementById('email');
         const password = document.getElementById('password');
         const name = document.getElementById("fullname");
         const confirmPassword = document.getElementById("confirm");
 
         console.log("Registration attempt with:", {
-            username: username.value,
             email: email.value,
             password: password.value,
             name: name.value,
@@ -30,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         // Validation
-        if (!validateInput(username, 'Username') || !validateInput(email, 'Email') || 
+        if  (!validateInput(email, 'Email') || 
             !validateInput(password, 'Password') || !validateInput(name, 'Name') ||
             !validateInput(confirmPassword, 'Confirm Password')) {
             return;
@@ -61,7 +59,6 @@ document.addEventListener('DOMContentLoaded', function() {
         // Create new user object
         const newUser = {
             id: GenerateUserId(),
-            username: username.value,
             password: hashedPassword,
             name: name.value,
             email: email.value.toLowerCase(),

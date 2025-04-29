@@ -28,7 +28,6 @@ function displayUserInfo(user) {
     const userInfoDiv = document.getElementById('user-info');
     userInfoDiv.innerHTML = `
         <h2>User Information</h2>
-        <p><strong>Username:</strong> ${user.username}</p>
         <p><strong>Name:</strong> ${user.profile.name}</p>
         <p><strong>Email:</strong> ${user.email}</p>
         <p><strong>ID:</strong> ${user.id}</p>

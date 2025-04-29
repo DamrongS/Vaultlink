@@ -1,7 +1,6 @@
 class User {
-    constructor(id, username, password, name, email, registeredAt) {
+    constructor(id, password, name, email, registeredAt) {
       this.id = id;
-      this.username = username;
       this.password = password.hashEncode(); // hashed
       this.profile = { name, email };
       this.inbox = [];
@@ -13,7 +12,7 @@ class User {
   
     save() {
       const users = JSON.parse(localStorage.getItem("users")) || [];
-      if (users.find(u => u.username === this.username)) {
+      if (users.find(u => u.email === this.email)) {
         //alert("Username already taken.");
         return false;
       }
@@ -27,12 +26,12 @@ class User {
       return JSON.parse(localStorage.getItem("users")) || [];
     }
   
-    static findByUsername(username) {
-      return User.getAllUsers().find(u => u.username === username);
+    static findByEmail(email) {
+      return User.getAllUsers().find(u => u.email === email);
     }
   
-    static login(username, password) {
-      const user = User.findByUsername(username);
+    static login(email, password) {
+      const user = User.findByEmail(email);
       if (password === user.password) {
         console.log("Login successful. Storing user ID:", user.id);
         localStorage.setItem('loggedInUserId', user.id);
