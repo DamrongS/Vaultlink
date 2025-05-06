@@ -67,5 +67,5 @@ function userExists(email) {
     return users.some(user => user.email === email);
 }
 
-const users = getUsers();
+//const users = getUsers();
 //console.log("User object structure:", JSON.stringify(users[0], null, 2));

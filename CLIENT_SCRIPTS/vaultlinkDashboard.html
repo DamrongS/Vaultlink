@@ -116,6 +116,28 @@
         color: #003366;
       }
 
+      .transactions {
+        margin-top: 1rem;
+      }
+      
+      .transaction-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 0.5rem;
+      }
+      
+      .transaction-table th, .transaction-table td {
+        padding: 0.5rem;
+        text-align: left;
+        border-bottom: 1px solid #ccc;
+      }
+      
+      .transaction-table th {
+        background-color: #f0f4f8;
+        color: #003366;
+      }
+      
+
   </style>
 </head>
 <body>
@@ -155,7 +177,26 @@
     const content = document.querySelector('.tab-content');
 
     const tabContents = {
-      overview: `<h2>Overview</h2><p>Here you can see a summary of your account status, recent transactions, and financial highlights.</p>`,
+      overview: 
+      `<h2>Overview</h2>
+      <p>Here you can see a summary of your account status, recent transactions, and financial highlights.</p>
+      <div class="transactions">
+      <h3>Recent Transactions</h3>
+      <table class="transaction-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Description</th>
+            <th>Amount</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="transaction-body">
+          <!-- Transactions will be inserted here -->
+        </tbody>
+      </table>
+    </div>
+    `,
       inbox: `<h2>Inbox</h2><p>Check your messages, notifications, and alerts here.</p>`,
       usage: `<h2>Usage</h2><p>Track your expenses, payment history, and usage statistics over time.</p>`,
       subscription: `<h2>Subscription</h2><p>Manage your active subscriptions, billing info, and renewal preferences.</p>`,
@@ -165,7 +206,8 @@
       pension: `<h2>Pension</h2><p>View pension contributions, growth forecasts, and plan options.</p>`,
       insurance: `<h2>Insurance</h2><p>Track your active policies, claims, and coverage details.</p>`,
       car: `<h2>Car</h2><p>Manage car loans, insurance, and vehicle-related expenses.</p>`,
-      worth: `<h2>Worth</h2><p>Get an overview of your total net worth and asset distribution.</p>`,
+      worth: `<h2>Worth</h2>
+      <p>Get an overview of your total net worth and asset distribution.</p>`,
       valuta: `<h2>Valuta</h2>
   <div class="valuta-section">
     <label for="amount">Amount:</label>
