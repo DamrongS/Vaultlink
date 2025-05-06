@@ -70,7 +70,8 @@ class User {
       balance: 0.00,
       createdAt: Date.now(),
       locked: false,
-      transactions: []
+      transactions: [],
+      cards: {}
     };
 
     // Persist change
@@ -78,6 +79,10 @@ class User {
       u.id === this.id ? this : u
     );
     localStorage.setItem("users", JSON.stringify(users));
+  }
+
+  addCard() {
+    
   }
 
   addTransaction(accountName, type, amount, description) {
