@@ -18,76 +18,67 @@ document.addEventListener('DOMContentLoaded', function() {
         alert('An error occurred while loading your data. Please try again.');
         window.location.href = 'loginPage.html';
     } else {
-        displayUserInfo(user);
+        displayOverview(user);
     }
 });
 
-function displayUserInfo(user) {
-    const userInfoDiv = document.getElementById('user-info');
-    userInfoDiv.innerHTML = `
-        <h2>User Information</h2>
-        <p><strong>Name:</strong> ${user.profile.name}</p>
-        <p><strong>Email:</strong> ${user.email}</p>
-        <p><strong>ID:</strong> ${user.id}</p>
+function displayOverview(user) {
+    // Set tab content to the Overview tab
+    const content = document.querySelector('.tab-content');
+    content.innerHTML = tabContents.overview;
 
-        <h3>User Settings</h3>
-        <p><strong>Dark Mode:</strong> ${user.settings.darkMode ? 'Enabled' : 'Disabled'}</p>
-        <p><strong>Language:</strong> ${user.settings.language}</p>
+    // Now modify elements inside the Overview content
+    // For example, you could update the transactions table like this:
+    const transactionsBody = document.getElementById('transaction-body');
 
-        <h3>Account Balance</h3>
-        <p><strong>Current Balance:</strong> $${user.accounts?.Main?.balance || "Loading..."}</p>
-
-        <h3>Recent Transactions</h3>
-        <table class="transaction-table">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Description</th>
-                    <th>Amount</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody id="transaction-body">
-                <!-- Transactions will be inserted here -->
-            </tbody>
-        </table>
-    `;
-
-    // Check if user has accounts before attempting to populate transactions
-    if (user.accounts && Object.keys(user.accounts).length > 0) {
-        populateTransactionsTable(user);
-    } else {
-        console.warn("No accounts found for this user.");
-        const noAccountsMessage = document.createElement('div');
-        noAccountsMessage.textContent = "This user hasn't created any accounts yet.";
-        document.querySelector('#transaction-body').appendChild(noAccountsMessage);
+    if (!transactionsBody) {
+        console.error('Transaction table body not found in Overview tab');
+        return;
     }
+
+    // Example: Populate with dummy transactions (replace with actual user data)
+    const sampleTransactions = user.accounts.Main.transactions;
+
+    sampleTransactions.forEach(tx => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${tx.date}</td>
+            <td>${tx.description}</td>
+            <td>${tx.amount}</td>
+            <td>${tx.status}</td>
+        `;
+        transactionsBody.appendChild(row);
+    });
 }
 
-function populateTransactionsTable(user) {
-    const transactionBody = document.getElementById('transaction-body');
-    transactionBody.innerHTML = '';
+function populateTransactionsList(user) {
+    const transactionList = document.getElementById('transaction-list');
+    if (!transactionList) {
+        console.warn("transaction-list element not found");
+        return;
+    }
+
+    transactionList.innerHTML = '';
 
     if (user.accounts.Main && user.accounts.Main.transactions) {
-        console.log("Transactions found, populating rows");
+        console.log("Transactions found, populating list");
         user.accounts.Main.transactions.slice().reverse().forEach(tx => {
             console.log("Processing transaction:", tx);
-            const row = document.createElement("tr");
-            
-            const date = new Date(tx.date).toLocaleString();
-            row.innerHTML = `
-                <td>${date}</td>
-                <td>${tx.type}</td>
-                <td>${tx.amount.toFixed(2)}</td>
-                <td>${tx.description || 'N'}</td>
+            const li = document.createElement("li");
+            li.className = "transaction-item";
+            li.innerHTML = `
+                <span>${new Date(tx.date).toLocaleString()}</span>
+                <span>${tx.type}</span>
+                <span>${tx.amount.toFixed(2)}</span>
+                <span>${tx.description || 'N'}</span>
             `;
-            
-            transactionBody.appendChild(row);
+            transactionList.appendChild(li);
         });
     } else {
         console.warn("No transactions found for this account.");
-        const noTransactionsMessage = document.createElement('div');
+        const noTransactionsMessage = document.createElement('li');
+        noTransactionsMessage.className = "transaction-item";
         noTransactionsMessage.textContent = "This account hasn't had any transactions yet.";
-        document.querySelector('#transaction-body').appendChild(noTransactionsMessage);
+        transactionList.appendChild(noTransactionsMessage);
     }
 }
