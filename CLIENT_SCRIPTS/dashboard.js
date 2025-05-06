@@ -82,3 +82,25 @@ function populateTransactionsList(user) {
         transactionList.appendChild(noTransactionsMessage);
     }
 }
+
+async function createNewAccount() {
+    const nameInput = document.getElementById('new-account-name');
+    const name = nameInput.value.trim();
+
+    if (!isCreatingNewAccount) {
+        nameInput.style.display = 'block';
+        isCreatingNewAccount = true;
+    } else {
+        nameInpuit.style.display = 'none';
+        isCreatingNewAccount = false;
+
+        if (name) {
+            try {
+                await User.createElement(name);
+                //do shit i morgen
+            } catch {
+
+            }
+        }
+    }
+}

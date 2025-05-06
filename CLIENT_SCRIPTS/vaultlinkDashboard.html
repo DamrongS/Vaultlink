@@ -137,6 +137,21 @@
         color: #003366;
       }
       
+      #create-new-account {
+        grid-column: span 2;
+        padding: 0.35rem;
+        font-size: 1rem;
+        background-color: #003366;
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 4px;
+        width:15%;
+      }
+
+      #create-new-account:hover {
+        background-color: #0051a3;
+      }    
 
   </style>
 </head>
@@ -203,9 +218,10 @@
       accounts: 
       `<h2>Accounts</h2>
       <p>View and manage your accounts here.</p>
-      <h3>Cards</h3>
+      <div id="account-list"></div>
+      <button id="create-new-account">Create new Account</button>
+      <input type="text" id="new-account-name" placeholder="Enter account name" style="display: none;">
       `,
-      
       investments: `<h2>Investments</h2><p>Review your stocks, mutual funds, and performance analytics.</p>`,
       housing: `<h2>Housing</h2><p>Manage your mortgages, rent payments, and home valuation tools.</p>`,
       pension: `<h2>Pension</h2><p>View pension contributions, growth forecasts, and plan options.</p>`,
