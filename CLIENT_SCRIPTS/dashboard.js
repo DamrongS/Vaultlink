@@ -116,28 +116,35 @@ function populateTransactionsList(user) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    const creatButton = document.getElementById('create-new-account');
-    const menu = document.getElementById('account-menu');
+    const createButton = document.querySelector('#create-new-account');
+    const accountMenu = document.querySelector('#account-menu');
+    const inputField = document.querySelector('#new-account-name');
 
-    createButton.addEventListener('click', function(e) {
-        e.preventDefault();
-        createNewAccount();
-        isCreatingNewAccount = !isCreatingNewAccount;
-    })
-
-    function toggleMenuVisibility(menu) {
-        menu.stlye.display = menu.style.display === 'none' ? 'block' : 'none';
-    }
-
-    async function createNewAccount() {
-        const nameInput = document.getElementById('new-account-name');
-        const name = nameInput.value.trim();
-    
-        if (!isCreatingNewAccount) {
-            toggleMenuVisibility(accountMenu);
+    function initializeElements() {
+        if (!createButton || !accountMenu) {
+            console.error('One or more elements not found');
             return;
-        } 
+        }
+
+        createButton.addEventListener('click', showMenu);
     }
+
+    function showMenu(e) {
+        e.preventDefault();
+        toggleClass(accountMenu, 'hidden', 'visible');
+        toggleInputVisibility(inputField);
+    }
+
+    function toggleClass(element, hiddenClass, visibleClass) {
+        element.classList.toggle(hiddenClass, true);
+        element.classList.toggle(visibleClass, false);
+    }
+
+    function toggleInputVisibility(input) {
+        input.style.display = input.style.display === 'none' ? '' : 'none';
+    }
+
+    initializeElements();
 })
 
 function formatDate(dateStr) {
