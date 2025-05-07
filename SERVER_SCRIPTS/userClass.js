@@ -88,20 +88,20 @@ class User {
   addTransaction(accountName, type, amount, description) {
     const account = this.accounts[accountName];
     if (!account || account.locked) return;
-  
+
     const transaction = {
-      type,
-      amount,
-      date: Date.now(),
-      description: description || ""
+        type,
+        amount,
+        date: Date.now(),
+        description: description || ""
     };
-  
+
     account.transactions.push(transaction);
     account.balance += (type === "deposit" ? amount : -amount);
-  
+
     // Save updated user
     const users = User.getAllUsers().map(u =>
-      u.id === this.id ? this : u
+        u.id === this.id ? this : u
     );
     localStorage.setItem("users", JSON.stringify(users));
   }

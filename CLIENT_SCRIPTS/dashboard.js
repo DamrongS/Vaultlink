@@ -1,3 +1,5 @@
+let user;
+
 document.addEventListener('DOMContentLoaded', function() {
     const userId = localStorage.getItem('loggedInUserId');
     
@@ -9,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     console.log("Retrieved userId:", userId);
     
-    const user = User.getLoggedInUser();
+    user = User.getLoggedInUser();
     
     console.log("User retrieved:", user);
     
@@ -26,6 +28,17 @@ document.addEventListener('DOMContentLoaded', function() {
         setActiveTab('overview', user);
     });
     
+    // Deposit
+    //deposit(user, "Main", 100000000000000);
+
+    // Withdraw
+    //withdraw(user, "Main", 50);
+
+    // Transfer
+    //transfer("#000001", "#000002", 75);
+
+    //transfer("christofferschjodt@gmail.com", "christofferdamrong@gmail.com", 75);
+
 });
 
 function displayOverview(user) {
@@ -48,14 +61,27 @@ function displayOverview(user) {
 
     sampleTransactions.forEach(tx => {
         const row = document.createElement('tr');
+        
+        // Ensure tx.amount is a number
+        const amount = Number(tx.amount);
+        
+        if (isNaN(amount)) {
+            console.error(`Invalid amount value: ${tx.amount}`);
+            return; // Skip this transaction if the amount is invalid
+        }
+        
+        const amountColor = amount < 0 ? 'red' : 'green';
+        
         row.innerHTML = `
             <td>${formatDate(tx.date)}</td>
             <td>${tx.description}</td>
-            <td>${tx.amount.toFixed(2)} USD</td>
+            <td style="color: ${amountColor};">${amount.toFixed(2)} USD</td>
             <td>${tx.status}</td>
         `;
+        
         transactionsBody.appendChild(row);
     });
+    
 }
 
 function populateTransactionsList(user) {
@@ -138,5 +164,5 @@ function setActiveTab(section, user) {
     }
 
     // Handle other sections...
-    updateSidebar();
+    //updateSidebar();
 }
