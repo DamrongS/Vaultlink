@@ -136,6 +136,24 @@
         background-color: #f0f4f8;
         color: #003366;
       }
+
+      .account-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .account-table th, .account-table td {
+        padding: 0.5rem;
+        text-align: left;
+        border-bottom: 1px solid #ccc;
+      }
+
+      .account-table th {
+        background-color: #f0f4f8;
+        color: #003366;;
+      }
       
       #create-new-account {
         grid-column: span 2;
@@ -151,7 +169,16 @@
 
       #create-new-account:hover {
         background-color: #0051a3;
-      }    
+      }
+      
+      .menu {
+        display: none;
+        position: absolute;
+        background-color: white;
+        border: 1px solid #ccc;
+        padding: 10px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      }
 
   </style>
 </head>
@@ -218,9 +245,24 @@
       accounts: 
       `<h2>Accounts</h2>
       <p>View and manage your accounts here.</p>
-      <div id="account-list"></div>
+      <table class="account-table">
+        <thead>
+          <tr>
+            <th>Expand Details</th>
+            <th>Name</th>
+            <th>Balance</th>
+          </tr>
+        </thead>
+        <tbody id="account-body">
+          <!-- Accounts will be inserted here -->
+        </tbody>
+      </table>
       <button id="create-new-account">Create new Account</button>
-      <input type="text" id="new-account-name" placeholder="Enter account name" style="display: none;">
+      <div id="account-menu" class="menu">
+        <h3>Create New Account</h3>
+        <input type="text" id="new-account-name" placeholder="Enter account name">
+        <button id="submit-account">Submit</button>
+      </div>
       `,
       investments: `<h2>Investments</h2><p>Review your stocks, mutual funds, and performance analytics.</p>`,
       housing: `<h2>Housing</h2><p>Manage your mortgages, rent payments, and home valuation tools.</p>`,

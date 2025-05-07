@@ -83,24 +83,27 @@ function populateTransactionsList(user) {
     }
 }
 
-async function createNewAccount() {
-    const nameInput = document.getElementById('new-account-name');
-    const name = nameInput.value.trim();
+document.addEventListener('DOMContentLoaded', function () {
+    const creatButton = document.getElementById('create-new-account');
+    const menu = document.getElementById('account-menu');
 
-    if (!isCreatingNewAccount) {
-        nameInput.style.display = 'block';
-        isCreatingNewAccount = true;
-    } else {
-        nameInpuit.style.display = 'none';
-        isCreatingNewAccount = false;
+    createButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        createNewAccount();
+        isCreatingNewAccount = !isCreatingNewAccount;
+    })
 
-        if (name) {
-            try {
-                await User.createElement(name);
-                //do shit i morgen
-            } catch {
-
-            }
-        }
+    function toggleMenuVisibility(menu) {
+        menu.stlye.display = menu.style.display === 'none' ? 'block' : 'none';
     }
-}
+
+    async function createNewAccount() {
+        const nameInput = document.getElementById('new-account-name');
+        const name = nameInput.value.trim();
+    
+        if (!isCreatingNewAccount) {
+            toggleMenuVisibility(accountMenu);
+            return;
+        } 
+    }
+})
