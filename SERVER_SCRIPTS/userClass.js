@@ -106,6 +106,8 @@ class User {
       u.id === this.id ? this : u
     );
     localStorage.setItem("users", JSON.stringify(users));
+
+    this.updateAccountTable();
   }
 
   addTransaction(accountName, type, amount, description) {
@@ -128,6 +130,21 @@ class User {
     localStorage.setItem("users", JSON.stringify(users));
   }
 
+  updateAccountTable() {
+    const accountBody = document.getElementById('account-body');
+    accountBody.innerHTML = ''; // Clear current content
+
+    Object.values(this.accounts).forEach(account => {
+      const newRow = document.createElement('tr');
+      newRow.innerHTML = `
+        <td>+</td>
+        <td>${account.name}</td>
+        <td>$${account.balance.toFixed(2)}</td>
+      `;
+      accountBody.appendChild(newRow);
+    });
+  }
+  
   addCard() {
     // Implementér senere
   }

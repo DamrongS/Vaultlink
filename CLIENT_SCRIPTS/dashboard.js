@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     document.getElementById('accounts').addEventListener('click', function() {
+        console.log('goob');
         setActiveTab('accounts', user);
     });
     
@@ -42,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // transfer("#0949842", "#0406329", 2781023828);
 
     //transfer("christofferschjodt@gmail.com", "christofferdamrong@gmail.com", 75);
-
+    renderAccountsTable(user);
 });
 
 function displayOverview(user) {
@@ -124,24 +125,44 @@ function populateTransactionsList(user) {
 
 function createAccount() {
     const nameInput = document.getElementById('new-account-name');
-
+    
     if (!nameInput) {
-        alert('Inputfeltet kunne ikke findes.');
+        alert('Input field could not be found.');
         return;
     }
 
     const accountName = nameInput.value.trim();
-
+    
     if (accountName === '') {
         alert('Please enter an account name.');
         return;
     }
 
     console.log("Creating account:", accountName);
-    user.createAccount(accountName);
 
-    nameInput.value = '';
+    const newAccount = user.createAccount(accountName);
+
+    if (newAccount) {
+        // Create a new row in the accounts table for the newly created account
+        const accountBody = document.getElementById('account-body');
+        const newRow = document.createElement('tr');
+        newRow.innerHTML = `
+            <td>+</td> <!-- Placeholder for expand/collapse action -->
+            <td>${newAccount.name}</td>
+            <td>$${newAccount.balance.toFixed(2)}</td>
+        `;
+        accountBody.appendChild(newRow);
+
+        // Clear the input field
+        nameInput.value = '';
+
+        // Optionally, close the create account menu
+        toggleMenu();
+    } else {
+        alert('There was an error creating the account. Please try again.');
+    }
 }
+
 
 function renderAccountsTable(user) {
     const accountBody = document.getElementById('account-body');
@@ -150,11 +171,10 @@ function renderAccountsTable(user) {
         return;
     }
     console.log(accountBody);
-    accountBody.innerHTML = ''; // Ryd eksisterende rækker
+    accountBody.innerHTML = ''; // Clear existing rows
 
     Object.entries(user.accounts).forEach(([accountName, account]) => {
         const row = document.createElement('tr');
-
         const balance = Number(account.balance);
         const balanceDisplay = isNaN(balance) ? 'N/A' : balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
@@ -168,7 +188,6 @@ function renderAccountsTable(user) {
 
         accountBody.appendChild(row);
 
-        // Optional: Indsæt en ekstra skjult række med detaljer/transaktioner
         const detailRow = document.createElement('tr');
         detailRow.id = `details-${accountName}`;
         detailRow.style.display = 'none';
