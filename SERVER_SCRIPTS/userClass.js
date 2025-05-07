@@ -25,6 +25,10 @@ class User {
     static findByEmail(email) {
       return User.getAllUsers().find(u => u.email === email);
     }
+
+    static findById(id) {
+      return User.getAllUsers().find(u => u.id === id);
+    }
   
     static login(email, password) {
       const user = User.findByEmail(email);
