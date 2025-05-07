@@ -172,16 +172,16 @@
       }
       
       .menu {
-        display: none;
         position: absolute;
         background-color: white;
         border: 1px solid #ccc;
         padding: 10px;
         box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        display: none;
       }
 
-      #account-menu-container {
-        display: hidden;
+      .hidden-menu {
+        display: none;
       }
 
   </style>
@@ -221,6 +221,16 @@
   <script>
     const links = document.querySelectorAll('.sidebar a');
     const content = document.querySelector('.tab-content');
+    function toggleMenu() {
+      const menu = document.getElementById('account-menu');
+      if (menu) {
+        if (menu.style.display === 'block') {
+          menu.style.display = 'none';
+        } else {
+          menu.style.display = 'block';
+        }
+      }
+    }
 
     const tabContents = {
       overview: 
@@ -269,11 +279,11 @@
           <!-- Accounts will be inserted here -->
         </tbody>
       </table>
-      <button id="create-new-account">Create new Account</button>
+      <button id="create-new-account" onclick='toggleMenu()'>Create New Account</button>
       <div id="account-menu" class="menu">
         <h3>Create New Account</h3>
         <input type="text" id="new-account-name" placeholder="Enter account name">
-        <button id="submit-account">Submit</button>
+        <button id="submit-account" onclick='createAccount()'>Submit</button>
       </div>
       `,
       investments: `

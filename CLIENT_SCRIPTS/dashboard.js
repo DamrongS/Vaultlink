@@ -14,7 +14,8 @@ document.addEventListener('DOMContentLoaded', function() {
     user = User.getLoggedInUser();
     
     console.log("User retrieved:", user);
-    
+    console.log("Is user instance of User class", user instanceof User);
+
     if (!user) {
         console.error("Failed to retrieve user data");
         alert('An error occurred while loading your data. Please try again.');
@@ -118,42 +119,26 @@ function populateTransactionsList(user) {
     }
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-<<<<<<< HEAD
-    const createButton = document.querySelector('#create-new-account');
-    const accountMenu = document.querySelector('#account-menu');
-    const inputField = document.querySelector('#new-account-name');
-=======
-    const createButton = document.getElementById('create-new-account');
-    const menu = document.getElementById('account-menu');
->>>>>>> 4e1e661f3710581ceba5bfde617d9986395c4914
+function createAccount() {
+    const nameInput = document.getElementById('new-account-name');
 
-    function initializeElements() {
-        if (!createButton || !accountMenu) {
-            console.error('One or more elements not found');
-            return;
-        }
-
-        createButton.addEventListener('click', showMenu);
+    if (!nameInput) {
+        alert('Inputfeltet kunne ikke findes.');
+        return;
     }
 
-    function showMenu(e) {
-        e.preventDefault();
-        toggleClass(accountMenu, 'hidden', 'visible');
-        toggleInputVisibility(inputField);
+    const accountName = nameInput.value.trim();
+
+    if (accountName === '') {
+        alert('Please enter an account name.');
+        return;
     }
 
-    function toggleClass(element, hiddenClass, visibleClass) {
-        element.classList.toggle(hiddenClass, true);
-        element.classList.toggle(visibleClass, false);
-    }
+    console.log("Creating account:", accountName);
+    user.createAccount(accountName);
 
-    function toggleInputVisibility(input) {
-        input.style.display = input.style.display === 'none' ? '' : 'none';
-    }
-
-    initializeElements();
-})
+    nameInput.value = '';
+}
 
 function formatDate(dateStr) {
     const date = new Date(dateStr);

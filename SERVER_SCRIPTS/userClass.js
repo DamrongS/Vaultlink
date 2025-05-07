@@ -1,72 +1,89 @@
 class User {
-    constructor(id, password, name, email, registeredAt) {
-      this.id = id;
-      this.password = password.hashEncode(); // hashed
-      this.profile = { name, email };
-      this.inbox = [];
-      this.accounts = { "Main" : { id : "#000001", name : name, balance : 0.00, createdAt : Date.now(), locked : false, transactions : [{ type: "deposit", amount: 0, date: Date.now(), description: "Initial deposit" }], cards: {} } };
-      this.settings = { darkMode: false, language: "en" };
-      this.contact = { supportMessages: [] };
-      this.registeredAt = registeredAt;
-    }
-  
-    save() {
-      const users = JSON.parse(localStorage.getItem("users")) || [];
-      if (users.find(u => u.email === this.email)) {
-        //alert("Username already taken.");
-        return false;
-      }
-      users.push(this);
-      localStorage.setItem("users", JSON.stringify(users));
-      //alert("User registered!");
-      return true;
-    }
-  
-    static findByEmail(email) {
-      return User.getAllUsers().find(u => u.email === email);
-    }
-
-    static findById(id) {
-      return User.getAllUsers().find(u => u.id === id);
-    }
-  
-    static login(email, password) {
-      const user = User.findByEmail(email);
-      if (password === user.password) {
-          console.log("Login successful. Storing user ID:", user.id);
-          localStorage.setItem('loggedInUserId', user.id);
-          window.location.href = 'vaultlinkDashboard.html';
-      } else {
-          showError(passwordElement, 'Incorrect password.');
-          return;
-      }
+  constructor(id, password, name, email, registeredAt) {
+    this.id = id;
+    this.password = password.hashEncode(); // hashed
+    this.profile = { name, email };
+    this.inbox = [];
+    this.accounts = { "Main": { id: "#000001", name: name, balance: 0.00, createdAt: Date.now(), locked: false, transactions: [{ type: "deposit", amount: 0, date: Date.now(), description: "Initial deposit" }], cards: {} } };
+    this.settings = { darkMode: false, language: "en" };
+    this.contact = { supportMessages: [] };
+    this.registeredAt = registeredAt;
   }
+
+  save() {
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+    if (users.find(u => u.email === this.email)) {
+      //alert("Username already taken.");
+      return false;
+    }
+    users.push(this);
+    localStorage.setItem("users", JSON.stringify(users));
+    //alert("User registered!");
+    return true;
+  }
+
+  static findByEmail(email) {
+    return User.getAllUsers().find(u => u.email === email);
+  }
+
+  static findById(id) {
+    return User.getAllUsers().find(u => u.id === id);
+  }
+
+  static login(email, password) {
+    const user = User.findByEmail(email);
+    if (password === user.password) {
+      console.log("Login successful. Storing user ID:", user.id);
+      localStorage.setItem('loggedInUserId', user.id);
+      window.location.href = 'vaultlinkDashboard.html';
+    } else {
+      showError(passwordElement, 'Incorrect password.');
+      return;
+    }
+  }
+
+  static logout() {
+    localStorage.removeItem("loggedInUser");
+    //alert("Logged out successfully");
+  }
+
+  static getLoggedInUser() {
+    const loggedInUserId = localStorage.getItem("loggedInUserId");
+    if (!loggedInUserId) return null;
+    console.log("Retrieved userId:", loggedInUserId);
+    return User.getAllUsers().find(user => user.id == loggedInUserId);
+  }
+
+  static getAllUsers() {
+    console.log("Retrieving all users from localStorage");
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+    console.log("Retrieved users:", users);
+    return users;
+  }
+
+  static fromJSON(obj) {
+    const user = new User(
+      obj.id,
+      obj.password,
+      obj.profile?.name || "",
+      obj.profile?.email || "",
+      obj.registeredAt || Date.now()
+    );
   
-    static logout() {
-      localStorage.removeItem("loggedInUser");
-      //alert("Logged out successfully");
-    }
+    user.inbox = obj.inbox || [];
+    user.accounts = obj.accounts || {};
+    user.settings = obj.settings || { darkMode: false, language: "en" };
+    user.contact = obj.contact || { supportMessages: [] };
   
-    static getLoggedInUser() {
-      const loggedInUserId = localStorage.getItem("loggedInUserId");
-      if (!loggedInUserId) return null;
-      console.log("Retrieved userId:", loggedInUserId);
-      return User.getAllUsers().find(user => user.id == loggedInUserId);
-    }
-    
-    static getAllUsers() {
-        console.log("Retrieving all users from localStorage");
-        const users = JSON.parse(localStorage.getItem("users")) || [];
-        console.log("Retrieved users:", users);
-        return users;
-    }
+    return user;
+  }
 
   createAccount(accountName) {
     // Count existing accounts
     const count = Object.keys(this.accounts).length + 1;
     // Generate a new ID like "#0000002"
     const newId = `#${String(count).padStart(7, '0')}`;
-    const name  = accountName || `Account${newId}`;
+    const name = accountName || `Account${newId}`;
 
     this.accounts[name] = {
       id: newId,
@@ -86,7 +103,7 @@ class User {
   }
 
   addCard() {
-    
+
   }
 
   addTransaction(accountName, type, amount, description) {
@@ -94,10 +111,10 @@ class User {
     if (!account || account.locked) return;
 
     const transaction = {
-        type,
-        amount,
-        date: Date.now(),
-        description: description || ""
+      type,
+      amount,
+      date: Date.now(),
+      description: description || ""
     };
 
     account.transactions.push(transaction);
@@ -105,7 +122,7 @@ class User {
 
     // Save updated user
     const users = User.getAllUsers().map(u =>
-        u.id === this.id ? this : u
+      u.id === this.id ? this : u
     );
     localStorage.setItem("users", JSON.stringify(users));
   }
