@@ -128,7 +128,6 @@ document.addEventListener('DOMContentLoaded', function () {
     function toggleMenuVisibility(menu) {
         menu.stlye.display = menu.style.display === 'none' ? 'block' : 'none';
     }
-<<<<<<< HEAD
 
     async function createNewAccount() {
         const nameInput = document.getElementById('new-account-name');
@@ -140,8 +139,6 @@ document.addEventListener('DOMContentLoaded', function () {
         } 
     }
 })
-=======
-}
 
 function formatDate(dateStr) {
     const date = new Date(dateStr);
@@ -172,4 +169,3 @@ function setActiveTab(section, user) {
     // Handle other sections...
     //updateSidebar();
 }
->>>>>>> aeb721623784529a975d081d9fb6142a4c0d5f61
