@@ -43,7 +43,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // transfer("#0949842", "#0406329", 2781023828);
 
     //transfer("christofferschjodt@gmail.com", "christofferdamrong@gmail.com", 75);
-    renderAccountsTable(user);
 });
 
 function displayOverview(user) {
