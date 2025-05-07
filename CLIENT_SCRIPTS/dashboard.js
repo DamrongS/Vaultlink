@@ -1,3 +1,5 @@
+let user;
+
 document.addEventListener('DOMContentLoaded', function() {
     const userId = localStorage.getItem('loggedInUserId');
     
@@ -9,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     console.log("Retrieved userId:", userId);
     
-    const user = User.getLoggedInUser();
+    user = User.getLoggedInUser();
     
     console.log("User retrieved:", user);
     
@@ -20,35 +22,66 @@ document.addEventListener('DOMContentLoaded', function() {
     } else {
         displayOverview(user);
     }
+
+    console.log(document);
+    document.getElementById('overview').addEventListener('click', function() {
+        setActiveTab('overview', user);
+    });
+    
+    // Deposit
+    //deposit(user, "Main", 100000000000000);
+
+    // Withdraw
+    //withdraw(user, "Main", 50);
+
+    // Transfer
+    //transfer("#000001", "#000002", 75);
+
+    //transfer("christofferschjodt@gmail.com", "christofferdamrong@gmail.com", 75);
+
 });
 
 function displayOverview(user) {
-    // Set tab content to the Overview tab
     const content = document.querySelector('.tab-content');
+    if (!content) return;
+
     content.innerHTML = tabContents.overview;
 
-    // Now modify elements inside the Overview content
-    // For example, you could update the transactions table like this:
     const transactionsBody = document.getElementById('transaction-body');
-
     if (!transactionsBody) {
-        console.error('Transaction table body not found in Overview tab');
+        console.error('Transaction table body not found');
         return;
     }
 
-    // Example: Populate with dummy transactions (replace with actual user data)
-    const sampleTransactions = user.accounts.Main.transactions;
+    transactionsBody.innerHTML = ''; // 👈 Clear previous rows to prevent duplication
+
+    console.log("gg");
+
+    const sampleTransactions = user.accounts.Main.transactions || [];
 
     sampleTransactions.forEach(tx => {
         const row = document.createElement('tr');
+        
+        // Ensure tx.amount is a number
+        const amount = Number(tx.amount);
+        
+        if (isNaN(amount)) {
+            console.error(`Invalid amount value: ${tx.amount}`);
+            return; // Skip this transaction if the amount is invalid
+        }
+        
+        const amountColor = amount < 0 ? 'red' : 'green';
+        
         row.innerHTML = `
-            <td>${tx.date}</td>
+            <td>${formatDate(tx.date)}</td>
             <td>${tx.description}</td>
-            <td>${tx.amount}</td>
+            <td style="color: ${amountColor};">${amount.toFixed(2)} USD</td>
             <td>${tx.status}</td>
         `;
+        
         transactionsBody.appendChild(row);
     });
+    
 }
 
 function populateTransactionsList(user) {
@@ -67,12 +100,11 @@ function populateTransactionsList(user) {
             const li = document.createElement("li");
             li.className = "transaction-item";
             li.innerHTML = `
-                <span>${new Date(tx.date).toLocaleString()}</span>
+                <span>${formatDate(tx.date)}</span>
                 <span>${tx.type}</span>
                 <span>${tx.amount.toFixed(2)}</span>
                 <span>${tx.description || 'N'}</span>
             `;
-            transactionList.appendChild(li);
         });
     } else {
         console.warn("No transactions found for this account.");
@@ -96,6 +128,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function toggleMenuVisibility(menu) {
         menu.stlye.display = menu.style.display === 'none' ? 'block' : 'none';
     }
+<<<<<<< HEAD
 
     async function createNewAccount() {
         const nameInput = document.getElementById('new-account-name');
@@ -107,3 +140,36 @@ document.addEventListener('DOMContentLoaded', function () {
         } 
     }
 })
+=======
+}
+
+function formatDate(dateStr) {
+    const date = new Date(dateStr);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+}
+
+function setActiveTab(section, user) {
+    currentSection = section;
+
+    if (!user) {
+        user = User.getLoggedInUser(); // fallback if not passed in
+    }
+
+    if (!user) {
+        alert('Please log in again.');
+        window.location.href = 'loginPage.html';
+        return;
+    }
+
+    if (section === "overview") {
+        document.innerHTML = tabContents.overview;
+        displayOverview(user); // <- Rebuild overview tab
+    }
+
+    // Handle other sections...
+    //updateSidebar();
+}
+>>>>>>> aeb721623784529a975d081d9fb6142a4c0d5f61

@@ -67,5 +67,129 @@ function userExists(email) {
     return users.some(user => user.email === email);
 }
 
+// In utilities.js
+
+function deposit(user, accountName, amount) {
+    if (amount <= 0) {
+        console.warn("You can't deposit a negative amount!");
+        return;
+    }
+    
+    const account = user.accounts[accountName];
+    if (!account) {
+        console.error(`Account "${accountName}" not found.`);
+        return;
+    }
+    
+    account.balance += amount;
+    account.transactions.push({
+        type: "deposit",
+        amount,
+        date: Date.now(),
+        description: `Deposit`,
+        status: "Confirmed"
+    });
+    
+    // Save updated user
+    const users = User.getAllUsers().map(u =>
+        u.id === user.id ? user : u
+    );
+    localStorage.setItem("users", JSON.stringify(users));
+    
+    console.log(`Deposited ${amount} into account "${accountName}".`);
+}
+
+function withdraw(user, accountName, amount) {
+    if (amount <= 0) {
+        console.warn("Invalid withdrawal amount.");
+        return;
+    }
+    
+    const account = user.accounts[accountName];
+    if (!account) {
+        console.error(`Account "${accountName}" not found.`);
+        return;
+    }
+    
+    if (account.balance < amount) {
+        console.warn("Insufficient funds for withdrawal.");
+        return;
+    }
+    
+    account.balance -= amount;
+    account.transactions.push({
+        type: "withdrawal",
+        amount: -amount,
+        date: Date.now(),
+        description: `Withdrawal`,
+        status: "Confirmed"
+    });
+    
+    // Save updated user
+    const users = User.getAllUsers().map(u =>
+        u.id === user.id ? user : u
+    );
+    localStorage.setItem("users", JSON.stringify(users));
+    
+    console.log(`Withdrew ${amount} from account "${accountName}".`);
+}
+
+function transfer(fromEmail, toEmail, amount) {
+    if (amount <= 0) {
+        console.warn("Invalid transfer amount.");
+        return;
+    }
+    
+    const fromUser = User.findByEmail(fromEmail);
+    const toUser = User.findByEmail(toEmail);
+    
+    if (!fromUser || !toUser) {
+        console.error("One or both users not found.");
+        return;
+    }
+
+    // Ensure the "from" account has enough balance
+    const fromAccount = fromUser.accounts["Main"];
+    if (fromAccount.balance < amount) {
+        console.log(fromAccount.balance, amount);
+        console.warn("Insufficient funds for transfer.");
+        return;
+    }
+
+    // Deduct from the "from" account and add to the "to" account
+    fromAccount.balance -= amount;
+    toUser.accounts["Main"].balance += amount;
+
+    // Create transfer-out transaction for the sender (negative amount for loss)
+    fromAccount.transactions.push({
+        type: "transfer-out",
+        amount: -amount,  // Make the amount negative
+        date: Date.now(),
+        description: `Transfer to ${toUser.email}`,
+        status: "Confirmed"
+    });
+
+    // Create transfer-in transaction for the receiver
+    toUser.accounts["Main"].transactions.push({
+        type: "transfer-in",
+        amount,
+        date: Date.now(),
+        description: `Transfer from ${fromUser.email}`,
+        status: "Confirmed"
+    });
+
+    // Save updated users
+    const users = User.getAllUsers().map(u => {
+        if (u.id === fromUser.id) return fromUser;
+        if (u.id === toUser.id) return toUser;
+        return u;
+    });
+
+    localStorage.setItem("users", JSON.stringify(users));
+    
+    console.log(`Transferred ${amount} from ${fromUser.email} to ${toUser.email}.`);
+
+}
+
 //const users = getUsers();
 //console.log("User object structure:", JSON.stringify(users[0], null, 2));
