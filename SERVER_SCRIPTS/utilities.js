@@ -68,7 +68,6 @@ function userExists(email) {
 }
 
 // In utilities.js
-
 function deposit(user, accountName, amount) {
     if (amount <= 0) {
         console.warn("You can't deposit a negative amount!");
@@ -134,14 +133,14 @@ function withdraw(user, accountName, amount) {
     console.log(`Withdrew ${amount} from account "${accountName}".`);
 }
 
-function transfer(fromEmail, toEmail, amount) {
+function transfer(fromId, toId, amount) {
     if (amount <= 0) {
         console.warn("Invalid transfer amount.");
         return;
     }
     
-    const fromUser = User.findByEmail(fromEmail);
-    const toUser = User.findByEmail(toEmail);
+    const fromUser = User.findById(fromId);
+    const toUser = User.findById(toId);
     
     if (!fromUser || !toUser) {
         console.error("One or both users not found.");
@@ -165,7 +164,7 @@ function transfer(fromEmail, toEmail, amount) {
         type: "transfer-out",
         amount: -amount,  // Make the amount negative
         date: Date.now(),
-        description: `Transfer to ${toUser.email}`,
+        description: `Transfer to ${toUser.id} ${toUser.profile.name}`,
         status: "Confirmed"
     });
 
@@ -174,7 +173,7 @@ function transfer(fromEmail, toEmail, amount) {
         type: "transfer-in",
         amount,
         date: Date.now(),
-        description: `Transfer from ${fromUser.email}`,
+        description: `Transfer from ${fromUser.id} ${fromUser.profile.name}`,
         status: "Confirmed"
     });
 
@@ -187,8 +186,39 @@ function transfer(fromEmail, toEmail, amount) {
 
     localStorage.setItem("users", JSON.stringify(users));
     
-    console.log(`Transferred ${amount} from ${fromUser.email} to ${toUser.email}.`);
+    console.log(`Transferred ${amount} from ${fromUser.id} ${fromUser.profile.name} to ${toUser.id} ${toUser.profile.name}.`);
 
+}
+
+function updateTotalBalance() {
+    let accountBalances = 0;
+    //console.log("User Accounts: ", user.accounts);
+
+    const accountKeys = Object.keys(user.accounts);
+    for (let i = 0; i < accountKeys.length; i++) {
+        const key = accountKeys[i];
+        const balance = user.accounts[key].balance;
+        accountBalances += balance;
+    }
+
+    //console.log("Total Account Balance: ", accountBalances);
+
+    const total = accountBalances;
+    const balanceElem = document.getElementById("total-balance");
+    if (balanceElem) {
+        balanceElem.textContent = `$${total.toFixed(2)}`;
+    }
+
+    //console.log("Formatted Total Balance: ", `$${total.toFixed(2)}`);
+}
+
+function updateAccountID() {
+    const balanceElem = document.getElementById("ID");
+    if (balanceElem) {
+        balanceElem.textContent = `${user.id}`;
+    }
+
+    //console.log("Formatted Total Balance: ", `$${total.toFixed(2)}`);
 }
 
 //const users = getUsers();

@@ -29,13 +29,13 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Deposit
-    //deposit(user, "Main", 100000000000000);
+    //deposit(user, "Main", 3450187239591293985.192);
 
     // Withdraw
-    //withdraw(user, "Main", 50);
+    //withdraw(user, "Main", 3450187239591293985.192);
 
     // Transfer
-    //transfer("#000001", "#000002", 75);
+    // transfer("#0949842", "#0406329", 2781023828);
 
     //transfer("christofferschjodt@gmail.com", "christofferdamrong@gmail.com", 75);
 
@@ -46,6 +46,9 @@ function displayOverview(user) {
     if (!content) return;
 
     content.innerHTML = tabContents.overview;
+
+    updateAccountID()
+    updateTotalBalance();
 
     const transactionsBody = document.getElementById('transaction-body');
     if (!transactionsBody) {
@@ -75,7 +78,7 @@ function displayOverview(user) {
         row.innerHTML = `
             <td>${formatDate(tx.date)}</td>
             <td>${tx.description}</td>
-            <td style="color: ${amountColor};">${amount.toFixed(2)} USD</td>
+            <td style="color: ${amountColor};">${amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USD</td>
             <td>${tx.status}</td>
         `;
         
@@ -116,9 +119,14 @@ function populateTransactionsList(user) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
+<<<<<<< HEAD
     const createButton = document.querySelector('#create-new-account');
     const accountMenu = document.querySelector('#account-menu');
     const inputField = document.querySelector('#new-account-name');
+=======
+    const createButton = document.getElementById('create-new-account');
+    const menu = document.getElementById('account-menu');
+>>>>>>> 4e1e661f3710581ceba5bfde617d9986395c4914
 
     function initializeElements() {
         if (!createButton || !accountMenu) {

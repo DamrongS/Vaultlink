@@ -69,15 +69,16 @@
     } else {
       // Build table
       let html = '<table><thead><tr>'
-        + '<th>#</th><th>Full Name</th><th>Email</th><th>Accounts</th></th><th>Registered At</th>'
+        + '<th>#</th><th>Account ID</th><th>Full Name</th><th>Email</th><th>Accounts</th></th><th>Registered At</th>'
         + '</tr></thead><tbody>';
 
       users.forEach((u, i) => {
         html += '<tr>'
           + `<td>${i + 1}</td>`
+          + `<td>${u.id}</td>`
           + `<td>${u.name}</td>`
           + `<td>${u.email}</td>`
-          + `<td>${u.accounts.length}</td>`
+          + `<td>${Object.keys(u.accounts).length}</td>`
           + `<td>${new Date(u.registeredAt).toLocaleString()}</td>`
           + '</tr>';
       });
