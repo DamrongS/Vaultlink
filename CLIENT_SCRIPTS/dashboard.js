@@ -14,7 +14,6 @@ document.addEventListener('DOMContentLoaded', function() {
     user = User.getLoggedInUser();
     
     console.log("User retrieved:", user);
-    console.log("Is user instance of User class", user instanceof User);
 
     if (!user) {
         console.error("Failed to retrieve user data");
@@ -27,6 +26,10 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log(document);
     document.getElementById('overview').addEventListener('click', function() {
         setActiveTab('overview', user);
+    });
+
+    document.getElementById('accounts').addEventListener('click', function() {
+        setActiveTab('accounts', user);
     });
     
     // Deposit
@@ -140,6 +143,46 @@ function createAccount() {
     nameInput.value = '';
 }
 
+function renderAccountsTable(user) {
+    const accountBody = document.getElementById('account-body');
+    if (!accountBody) {
+        console.error('Account body table element not found');
+        return;
+    }
+    console.log(accountBody);
+    accountBody.innerHTML = ''; // Ryd eksisterende rækker
+
+    Object.entries(user.accounts).forEach(([accountName, account]) => {
+        const row = document.createElement('tr');
+
+        const balance = Number(account.balance);
+        const balanceDisplay = isNaN(balance) ? 'N/A' : balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+        row.innerHTML = `
+            <td>
+                <button onclick="toggleAccountDetails('${accountName}')">🔽</button>
+            </td>
+            <td>${accountName}</td>
+            <td>${balanceDisplay} USD</td>
+        `;
+
+        accountBody.appendChild(row);
+
+        // Optional: Indsæt en ekstra skjult række med detaljer/transaktioner
+        const detailRow = document.createElement('tr');
+        detailRow.id = `details-${accountName}`;
+        detailRow.style.display = 'none';
+        detailRow.innerHTML = `
+            <td colspan="3">
+                <strong>Account ID:</strong> ${account.id}<br>
+                <strong>Created:</strong> ${formatDate(account.createdAt)}<br>
+                <strong>Transactions:</strong> ${account.transactions.length}
+            </td>
+        `;
+        accountBody.appendChild(detailRow);
+    });
+}
+
 function formatDate(dateStr) {
     const date = new Date(dateStr);
     const day = String(date.getDate()).padStart(2, '0');
@@ -164,6 +207,11 @@ function setActiveTab(section, user) {
     if (section === "overview") {
         document.innerHTML = tabContents.overview;
         displayOverview(user); // <- Rebuild overview tab
+    }
+
+    if (section === "accounts") {
+        document.innerHTML = tabContents.accounts;
+        renderAccountsTable(user);
     }
 
     // Handle other sections...
