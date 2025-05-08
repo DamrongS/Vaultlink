@@ -390,72 +390,67 @@
       }
     }
 
-    const stockData = [
-      { company: "Apple", ticker: "AAPL", price: 0.00, change: +0.00 },
-      { company: "Microsoft", ticker: "MSFT", price: 0.00, change: +0.00 },
-      { company: "Tesla", ticker: "TSLA", price: 0.00, change: +0.00 },
-      { company: "Amazon", ticker: "AMZN", price: 0.00, change: +0.00 }
-      ];
+    const stockData = [];
 
       async function getAllStockData() {
         const tickers = ["AAPL", "MSFT", "TSLA", "AMZN"];
         const results = await Promise.all(tickers.map(t => getStockChange(t)));
-      
+    
         const companies = {
-          AAPL: "Apple",
-          MSFT: "Microsoft",
-          TSLA: "Tesla",
-          AMZN: "Amazon"
+            AAPL: "Apple",
+            MSFT: "Microsoft",
+            TSLA: "Tesla",
+            AMZN: "Amazon"
         };
-      
+    
         const stockData = results.map(stock => ({
-          company: companies[stock.ticker],
-          ticker: stock.ticker,
-          price: stock.currentPrice,
-          change: stock.change
+            company: companies[stock.ticker],
+            ticker: stock.ticker,
+            price: stock.currentPrice,
+            change: stock.change
         }));
-      
+    
         return stockData;
-      }
+    }
       
-      async function getStockChange(ticker) {
-        const url = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${ticker}&apikey=${API_KEY}`;
-        const res = await fetch(url);
-        const data = await res.json();
-        const series = data["Time Series (Daily)"];
+        async function getStockChange(ticker) {
+          const url = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${ticker}&apikey=${API_KEY}`;
+          const res = await fetch(url);
+          const data = await res.json();
+          const series = data["Time Series (Daily)"];
       
-        if (!series) return null;
+          if (!series) return null;
       
-        const dates = Object.keys(series);
-        const latest = parseFloat(series[dates[0]]["4. close"]);
-        const previous = parseFloat(series[dates[1]]["4. close"]);
-        const change = +(latest - previous).toFixed(2);
+          const dates = Object.keys(series);
+          const latest = parseFloat(series[dates[0]]["4. close"]);
+          const previous = parseFloat(series[dates[1]]["4. close"]);
+          const change = +(latest - previous).toFixed(2);
       
-        return {
-          ticker,
-          currentPrice: latest,
-          change,
-        };
-      }      
+          return {
+              ticker,
+              currentPrice: latest,
+              change
+          };
+      }    
 
       function displayStockData() {
         const tableBody = document.getElementById("stock-table-body");
         if (!tableBody) return;
-
+    
         tableBody.innerHTML = "";
         stockData.forEach(stock => {
-          const row = document.createElement("tr");
-          row.innerHTML = `
-            <td>${stock.company}</td>
-            <td>${stock.ticker}</td>
-            <td>$${stock.price.toFixed(2)}</td>
-            <td style="color: ${stock.change >= 0 ? 'green' : 'red'};">
-              ${stock.change >= 0 ? '+' : ''}${stock.change.toFixed(2)}%
-            </td>
-          `;
-          tableBody.appendChild(row);
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${stock.company}</td>
+                <td>${stock.ticker}</td>
+                <td>$${stock.price.toFixed(2)}</td>
+                <td style="color: ${stock.change >= 0 ? 'green' : 'red'};">
+                    ${stock.change >= 0 ? '+' : ''}${stock.change.toFixed(2)}%
+                </td>
+            `;
+            tableBody.appendChild(row);
         });
-      }
+    }
 
       // Run when tab changes
       links.forEach(link => {
@@ -487,33 +482,44 @@
 
     const ctx = document.getElementById('stockChart').getContext('2d');
 
-    if (chart) chart.destroy(); // Destroy previous chart
+    if (chart) chart.destroy();
 
     chart = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: stock.dates,
-        datasets: [{
-          label: `${symbol} Price (Last 30 Days)`,
-          data: stock.prices,
-          borderColor: 'rgb(75, 192, 192)',
-          tension: 0.3,
-          fill: true,
-          backgroundColor: 'rgba(75, 192, 192, 0.1)'
-        }]
-      },
-      options: {
-        scales: {
-          x: {
-            display: true,
-            title: { display: true, text: 'Date' }
-          },
-          y: {
-            display: true,
-            title: { display: true, text: 'Price (USD)' }
-          }
+        type: 'line',
+        data: {
+            labels: stock.dates,
+            datasets: [{
+                label: `${symbol} Price (Last 30 Days)`,
+                data: stock.prices,
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0.3,
+                fill: true,
+                backgroundColor: 'rgba(75, 192, 192, 0.1)'
+            }]
+        },
+        options: {
+            scales: {
+                x: {
+                    display: true,
+                    title: { display: true, text: 'Date' }
+                },
+                y: {
+                    display: true,
+                    title: { display: true, text: 'Price (USD)' }
+                }
+            },
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const label = context.label || '';
+                            const value = context.parsed || 0;
+                            return `${label}: $${value.toFixed(2)}`;
+                        }
+                    }
+                }
+            }
         }
-      }
     });
   }
 
@@ -533,7 +539,7 @@
 
   getAllStockData().then(data => {
     console.log(data);
-    displayStockData();
+    displayStockData(data);
   });  
 
   </script>

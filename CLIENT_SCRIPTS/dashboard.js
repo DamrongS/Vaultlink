@@ -175,7 +175,7 @@ function setActiveTab(section, user) {
     currentSection = section;
 
     if (!user) {
-        user = User.getLoggedInUser(); // fallback if not passed in
+        user = User.getLoggedInUser();
     }
 
     if (!user) {
@@ -186,9 +186,19 @@ function setActiveTab(section, user) {
 
     if (section === "overview") {
         document.innerHTML = tabContents.overview;
-        displayOverview(user); // <- Rebuild overview tab
+        displayOverview(user);
     }
 
-    // Handle other sections...
-    //updateSidebar();
+    if (section === "accounts") {
+        document.innerHTML = tabContents.accounts;
+        renderAccountsTable(user);
+    }
+
+    if (section === "investments") {
+        setTimeout(() => {
+            const select = document.getElementById("stockSelect");
+            renderChart(select.value);
+            select.addEventListener("change", () => renderChart(select.value));
+        }, 0);
+    }
 }
