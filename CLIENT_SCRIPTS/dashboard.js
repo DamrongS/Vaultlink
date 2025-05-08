@@ -162,26 +162,7 @@ function createAccount() {
     console.log("Creating account:", accountName);
 
     const newAccount = user.createAccount(accountName);
-
-    if (newAccount) {
-        // Create a new row in the accounts table for the newly created account
-        const accountBody = document.getElementById('account-body');
-        const newRow = document.createElement('tr');
-        newRow.innerHTML = `
-            <td>+</td> <!-- Placeholder for expand/collapse action -->
-            <td>${newAccount.name}</td>
-            <td>$${newAccount.balance.toFixed(2)}</td>
-        `;
-        accountBody.appendChild(newRow);
-
-        // Clear the input field
-        nameInput.value = '';
-
-        // Optionally, close the create account menu
-        toggleMenu();
-    } else {
-        alert('There was an error creating the account. Please try again.');
-    }
+    toggleMenu();
 }
 
 
@@ -200,11 +181,13 @@ function renderAccountsTable(user) {
         const balanceDisplay = isNaN(balance) ? 'N/A' : balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
         row.innerHTML = `
-            <td>
-                <button onclick="toggleAccountDetails('${accountName}')">🔽</button>
-            </td>
+            <td>${account.id}</td>
             <td>${accountName}</td>
-            <td>${balanceDisplay} USD</td>
+            <td style='text-align:right'>$${balanceDisplay}</td>
+            <td>
+                <button class="dropdown-btn" 
+                data-account='{"name":"${accountName}"}'>🔽</button>
+            </td>
         `;
 
         accountBody.appendChild(row);
@@ -221,6 +204,10 @@ function renderAccountsTable(user) {
         `;
         accountBody.appendChild(detailRow);
     });
+}
+
+function toggleAccountDetails(accountName) {
+
 }
 
 function formatDate(dateStr) {
