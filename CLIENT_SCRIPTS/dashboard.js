@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
     user = User.getLoggedInUser();
     
     console.log("User retrieved:", user);
-
+    
     if (!user) {
         console.error("Failed to retrieve user data");
         alert('An error occurred while loading your data. Please try again.');
@@ -27,11 +27,6 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('overview').addEventListener('click', function() {
         setActiveTab('overview', user);
     });
-
-    document.getElementById('accounts').addEventListener('click', function() {
-        console.log('goob');
-        setActiveTab('accounts', user);
-    });
     
     // Deposit
     //deposit(user, "Main", 3450187239591293985.192);
@@ -43,6 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // transfer("#0949842", "#0406329", 2781023828);
 
     //transfer("christofferschjodt@gmail.com", "christofferdamrong@gmail.com", 75);
+
 });
 
 function displayOverview(user) {
@@ -124,13 +120,16 @@ function populateTransactionsList(user) {
 
 function createAccount() {
     const nameInput = document.getElementById('new-account-name');
+
     
     if (!nameInput) {
+        alert('Inputfeltet kunne ikke findes.');
         alert('Input field could not be found.');
         return;
     }
 
     const accountName = nameInput.value.trim();
+
     
     if (accountName === '') {
         alert('Please enter an account name.');
@@ -138,7 +137,9 @@ function createAccount() {
     }
 
     console.log("Creating account:", accountName);
+    user.createAccount(accountName);
 
+    nameInput.value = '';
     const newAccount = user.createAccount(accountName);
 
     if (newAccount) {
@@ -160,45 +161,6 @@ function createAccount() {
     } else {
         alert('There was an error creating the account. Please try again.');
     }
-}
-
-
-function renderAccountsTable(user) {
-    const accountBody = document.getElementById('account-body');
-    if (!accountBody) {
-        console.error('Account body table element not found');
-        return;
-    }
-    console.log(accountBody);
-    accountBody.innerHTML = ''; // Clear existing rows
-
-    Object.entries(user.accounts).forEach(([accountName, account]) => {
-        const row = document.createElement('tr');
-        const balance = Number(account.balance);
-        const balanceDisplay = isNaN(balance) ? 'N/A' : balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-
-        row.innerHTML = `
-            <td>
-                <button onclick="toggleAccountDetails('${accountName}')">🔽</button>
-            </td>
-            <td>${accountName}</td>
-            <td>${balanceDisplay} USD</td>
-        `;
-
-        accountBody.appendChild(row);
-
-        const detailRow = document.createElement('tr');
-        detailRow.id = `details-${accountName}`;
-        detailRow.style.display = 'none';
-        detailRow.innerHTML = `
-            <td colspan="3">
-                <strong>Account ID:</strong> ${account.id}<br>
-                <strong>Created:</strong> ${formatDate(account.createdAt)}<br>
-                <strong>Transactions:</strong> ${account.transactions.length}
-            </td>
-        `;
-        accountBody.appendChild(detailRow);
-    });
 }
 
 function formatDate(dateStr) {
@@ -225,11 +187,6 @@ function setActiveTab(section, user) {
     if (section === "overview") {
         document.innerHTML = tabContents.overview;
         displayOverview(user); // <- Rebuild overview tab
-    }
-
-    if (section === "accounts") {
-        document.innerHTML = tabContents.accounts;
-        renderAccountsTable(user);
     }
 
     // Handle other sections...
