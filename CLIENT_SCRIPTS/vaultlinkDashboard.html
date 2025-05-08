@@ -193,7 +193,7 @@
     <a href="#inbox">Inbox</a>
     <a href="#usage">Usage</a>
     <a href="#subscription">Subscription</a>
-    <a href="#accounts">Accounts</a>
+    <a id="accounts" href="#accounts">Accounts</a>
     <div class="divider"></div>
     <a href="#investments">Investments</a>
     <a href="#housing">Housing</a>
@@ -247,18 +247,19 @@
       <div class="transactions">
       <h3>Recent Transactions</h3>
       <table class="transaction-table">
-        <thead>
+      <thead>
           <tr>
-            <th>Date</th>
-            <th>Description</th>
-            <th>Amount</th>
-            <th>Status</th>
+              <th>Date</th>
+              <th>Description</th>
+              <th>Amount</th>
+              <th>Status</th>
+              <th>Account</th>
           </tr>
-        </thead>
-        <tbody id="transaction-body">
+      </thead>
+      <tbody id="transaction-body">
           <!-- Transactions will be inserted here -->
-        </tbody>
-      </table>
+      </tbody>
+  </table>
     </div>
     `,
       inbox: `<h2>Inbox</h2><p>Check your messages, notifications, and alerts here.</p>`,

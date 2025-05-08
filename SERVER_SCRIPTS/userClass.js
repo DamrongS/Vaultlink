@@ -7,7 +7,7 @@ class User {
     this.accounts = {
       "Main": {
         id: "#000001",
-        name: name,
+        name: name || "Main",
         balance: 0.00,
         createdAt: Date.now(),
         locked: false,
@@ -15,7 +15,8 @@ class User {
           type: "deposit",
           amount: 0,
           date: Date.now(),
-          description: "Initial deposit"
+          description: "Initial deposit",
+          status: ""
         }],
         cards: {}
       }

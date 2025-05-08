@@ -94,6 +94,9 @@ function deposit(user, accountName, amount) {
         u.id === user.id ? user : u
     );
     localStorage.setItem("users", JSON.stringify(users));
+
+    setActiveTab(activeTab, user);
+    populateTransactionsList(user)
     
     console.log(`Deposited ${amount} into account "${accountName}".`);
 }
@@ -129,17 +132,21 @@ function withdraw(user, accountName, amount) {
         u.id === user.id ? user : u
     );
     localStorage.setItem("users", JSON.stringify(users));
+
+    setActiveTab(activeTab, user);
+    populateTransactionsList(user)
     
     console.log(`Withdrew ${amount} from account "${accountName}".`);
 }
 
-function transfer(fromId, toId, amount) {
+function transfer(fromId, fromAccountName, toId, amount) {
     if (amount <= 0) {
         console.warn("Invalid transfer amount.");
         return;
     }
     
     const fromUser = User.findById(fromId);
+    const fromfromAccountName = fromAccountName || "Main";
     const toUser = User.findById(toId);
     
     if (!fromUser || !toUser) {
@@ -148,7 +155,7 @@ function transfer(fromId, toId, amount) {
     }
 
     // Ensure the "from" account has enough balance
-    const fromAccount = fromUser.accounts["Main"];
+    const fromAccount = fromUser.accounts[fromfromAccountName];
     if (fromAccount.balance < amount) {
         console.log(fromAccount.balance, amount);
         console.warn("Insufficient funds for transfer.");
@@ -185,9 +192,11 @@ function transfer(fromId, toId, amount) {
     });
 
     localStorage.setItem("users", JSON.stringify(users));
-    
-    console.log(`Transferred ${amount} from ${fromUser.id} ${fromUser.profile.name} to ${toUser.id} ${toUser.profile.name}.`);
 
+    setActiveTab(activeTab, user);
+    populateTransactionsList(user)
+
+    console.log(`Transferred ${amount} from ${fromUser.id} ${fromUser.profile.name} ${fromAccountName} to ${toUser.id} ${toUser.profile.name}.`);
 }
 
 function updateTotalBalance() {

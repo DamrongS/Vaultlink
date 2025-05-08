@@ -1,4 +1,5 @@
 let user;
+let activeTab = "overview";
 
 document.addEventListener('DOMContentLoaded', function() {
     const userId = localStorage.getItem('loggedInUserId');
@@ -32,6 +33,9 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('goob');
         setActiveTab('accounts', user);
     });
+
+    populateTransactionsList(user);
+    setActiveTab(activeTab, user);
     
     // Deposit
     //deposit(user, "Main", 3450187239591293985.192);
@@ -60,65 +64,83 @@ function displayOverview(user) {
         return;
     }
 
-    transactionsBody.innerHTML = ''; // 👈 Clear previous rows to prevent duplication
+    transactionsBody.innerHTML = ''; // Clear previous rows to prevent duplication
 
-    console.log("gg");
-
-    const sampleTransactions = user.accounts.Main.transactions || [];
-
-    sampleTransactions.forEach(tx => {
-        const row = document.createElement('tr');
-        
-        // Ensure tx.amount is a number
-        const amount = Number(tx.amount);
-        
-        if (isNaN(amount)) {
-            console.error(`Invalid amount value: ${tx.amount}`);
-            return; // Skip this transaction if the amount is invalid
+    // Display transactions for all accounts
+    Object.entries(user.accounts).forEach(([accountName, account]) => {
+        if (account.transactions && account.transactions.length > 0) {
+            account.transactions.slice().reverse().forEach(tx => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${formatDate(tx.date)}</td>
+                    <td>${tx.description || 'N'}</td>
+                    <td style="color: ${tx.amount < 0 ? 'red' : 'green'}">${Math.abs(tx.amount).toFixed(2)}</td>
+                    <td>${tx.status}</td>
+                    <td>${accountName}</td>
+                `;
+                transactionsBody.appendChild(row);
+            });
         }
-        
-        const amountColor = amount < 0 ? 'red' : 'green';
-        
-        row.innerHTML = `
-            <td>${formatDate(tx.date)}</td>
-            <td>${tx.description}</td>
-            <td style="color: ${amountColor};">${amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USD</td>
-            <td>${tx.status}</td>
-        `;
-        
-        transactionsBody.appendChild(row);
     });
-    
+
+    if (transactionsBody.innerHTML === '') {
+        console.warn("No transactions found for any account.");
+        const noTransactionsMessage = document.createElement('tr');
+        noTransactionsMessage.className = "transaction-item";
+        noTransactionsMessage.textContent = "No transactions found across any accounts.";
+        transactionsBody.appendChild(noTransactionsMessage);
+    }
 }
 
 function populateTransactionsList(user) {
-    const transactionList = document.getElementById('transaction-list');
-    if (!transactionList) {
-        console.warn("transaction-list element not found");
+    const transactionTable = document.querySelector('.transaction-table');
+    if (!transactionTable) {
+        console.warn("transaction-table element not found");
         return;
     }
 
-    transactionList.innerHTML = '';
+    transactionTable.innerHTML = '';
 
-    if (user.accounts.Main && user.accounts.Main.transactions) {
-        console.log("Transactions found, populating list");
-        user.accounts.Main.transactions.slice().reverse().forEach(tx => {
-            console.log("Processing transaction:", tx);
-            const li = document.createElement("li");
-            li.className = "transaction-item";
-            li.innerHTML = `
-                <span>${formatDate(tx.date)}</span>
-                <span>${tx.type}</span>
-                <span>${tx.amount.toFixed(2)}</span>
-                <span>${tx.description || 'N'}</span>
+    let anyTransactions = false;
+
+    for (const [accountName, account] of Object.entries(user.accounts)) {
+        if (account.transactions && account.transactions.length > 0) {
+            anyTransactions = true;
+            console.log(`Transactions found for account: ${accountName}`);
+
+            // Create table header
+            const headerRow = document.createElement('tr');
+            headerRow.innerHTML = `
+                <th>Date</th>
+                <th>Description</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Account</th>
             `;
-        });
-    } else {
-        console.warn("No transactions found for this account.");
-        const noTransactionsMessage = document.createElement('li');
+            transactionTable.appendChild(headerRow);
+
+            // Reverse so most recent appear first
+            account.transactions.slice().reverse().forEach(tx => {
+                console.log("Processing transaction:", tx);
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${formatDate(tx.date)}</td>
+                    <td>${tx.description || 'N'}</td>
+                    <td style="color: ${tx.amount < 0 ? 'red' : 'green'}">${Math.abs(tx.amount).toFixed(2)}</td>
+                    <td>${tx.status}</td>
+                    <td>${accountName}</td>
+                `;
+                transactionTable.appendChild(row);
+            });
+        }
+    }
+
+    if (!anyTransactions) {
+        console.warn("No transactions found for any account.");
+        const noTransactionsMessage = document.createElement('tr');
         noTransactionsMessage.className = "transaction-item";
-        noTransactionsMessage.textContent = "This account hasn't had any transactions yet.";
-        transactionList.appendChild(noTransactionsMessage);
+        noTransactionsMessage.textContent = "No transactions found across any accounts.";
+        transactionTable.appendChild(noTransactionsMessage);
     }
 }
 
@@ -223,7 +245,7 @@ function setActiveTab(section, user) {
     }
 
     if (section === "overview") {
-        document.innerHTML = tabContents.overview;
+        //document.innerHTML = tabContents.overview;
         displayOverview(user);
     }
 
@@ -239,4 +261,6 @@ function setActiveTab(section, user) {
             select.addEventListener("change", () => renderChart(select.value));
         }, 0);
     }
+
+    activeTab = section;
 }
