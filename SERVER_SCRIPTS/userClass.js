@@ -1,7 +1,7 @@
 class User {
   constructor(id, password, name, email, registeredAt) {
     this.id = id;
-    this.password = password.hashEncode?.() || password; // hash hvis muligt, ellers antag den er hashed
+    this.password = password; // hash hvis muligt, ellers antag den er hashed
     this.profile = { name, email };
     this.inbox = [];
     this.accounts = {
