@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function() {
             name: name.value,
             email: email.value.toLowerCase(),
             profile: { name: name.value, email: email.value },
-            accounts: { "Main" : { id : "#000001", name : name, balance : 0.00, createdAt : Date.now(), locked : false, transactions : [{ type: "deposit", amount: 0, date: Date.now(), description: "Initial deposit" }], cards: {} } },
+            accounts: { "Main" : { id : "#0000001", name : "Main", balance : 0.00, createdAt : Date.now(), locked : false, transactions : [{ type: "deposit", amount: 0, date: Date.now(), description: "Initial deposit" }], cards: {} } },
             settings: { darkMode: false, language: "en" },
             contact: { supportMessages: [] },
             registeredAt: Date.now()
