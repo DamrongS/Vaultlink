@@ -93,7 +93,7 @@ class User {
   }
 
   createAccount(accountName) {
-    const count = Object.keys(this.accounts).length + 1;
+    const count = Object.keys(this.accounts).length;
     const newId = `#${String(count).padStart(7, '0')}`;
     const name = accountName || `Account${newId}`;
 
