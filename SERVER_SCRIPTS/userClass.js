@@ -7,7 +7,7 @@ class User {
     this.accounts = {
       "Main": {
         id: "#0000001",
-        name: name || "Main",
+        name: "Main",
         balance: 0.00,
         createdAt: Date.now(),
         locked: false,
@@ -131,26 +131,6 @@ class User {
       this.updateAccountTable();
     }
   }
-
-  // addTransaction(accountName, type, amount, description) {
-  //   const account = this.accounts[accountName];
-  //   if (!account || account.locked) return;
-
-  //   const transaction = {
-  //     type,
-  //     amount,
-  //     date: Date.now(),
-  //     description: description || ""
-  //   };
-
-  //   account.transactions.push(transaction);
-  //   account.balance += (type === "deposit" ? amount : -amount);
-
-  //   const users = User.getAllUsers().map(u =>
-  //     u.id === this.id ? this : u
-  //   );
-  //   localStorage.setItem("users", JSON.stringify(users));
-  // }
 
   addTransaction(accountName, type, description) {
 
