@@ -316,4 +316,5 @@ function setActiveTab(section, user) {
     }
 
     populateTransactionsList(user);
+    populateAccountSelects(user);
 }
