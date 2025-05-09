@@ -204,6 +204,62 @@
     .show {
       display: block;
     }
+
+    .transfer-form {
+      margin-top: 20px;
+      padding: 20px;
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .transfer-form label {
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .transfer-form input,
+    .transfer-form select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+    }
+
+    .transfer-form button {
+      background-color: #003366;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .transfer-form button:hover {
+      background-color: #0051a3;
+    }
+
+    .transfer-form select {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-image: url('data:image/svg+xml;utf8,<svg fill="%23838383" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+      background-repeat: no-repeat;
+      background-position: right center;
+      background-size: 20px auto;
+    }
+
+    .transfer-form select option {
+      padding: 8px 10px;
+    }
+
+    .error-message {
+      color: red;
+      margin-top: 5px;
+      display: block;
+    }
   </style>
 </head>
 
@@ -257,32 +313,32 @@
 
     const dropdown = document.getElementById('dropdown');
 
-document.addEventListener('click', function (event) {
-  // Luk dropdown hvis klik er udenfor dropdown eller knap
-  if (!event.target.matches('.dropdown-btn')) {
-    dropdown.classList.remove('show');
-    return;
-  }
+    document.addEventListener('click', function (event) {
+      // Luk dropdown hvis klik er udenfor dropdown eller knap
+      if (!event.target.matches('.dropdown-btn')) {
+        dropdown.classList.remove('show');
+        return;
+      }
 
-  // Hent account-data fra knappen
-  const button = event.target;
-  const account = JSON.parse(button.getAttribute('data-account'));
+      // Hent account-data fra knappen
+      const button = event.target;
+      const account = JSON.parse(button.getAttribute('data-account'));
 
-  // Fyld dropdown med info
-  dropdown.innerHTML = `
+      // Fyld dropdown med info
+      dropdown.innerHTML = `
     <button style='margin-top: 5px;background-color:green; color:white' onclick="user.addTransaction('${account.name}', 'deposit', 'cash deposit')">Make deposit</button>
     <button style='margin-top: 5px;background-color:orange' onclick="user.addTransaction('${account.name}', 'withdrawel', 'cash withdrawel')">Make withdrawel</button>
     <button style='margin-top: 5px;background-color:blue; color:white' onclick="user.transferMoney('${account.name}')">Transfer money</button>
     <button style='margin-top: 5px;background-color:red; color:white' onclick="user.deleteAccount('${account.name}')">Delete account</button>
   `;
 
-  // Positionér dropdown ved knappen
-  const rect = button.getBoundingClientRect();
-  dropdown.style.top = `${rect.bottom + window.scrollY}px`;
-  dropdown.style.left = `${rect.left + window.scrollX}px`;
+      // Positionér dropdown ved knappen
+      const rect = button.getBoundingClientRect();
+      dropdown.style.top = `${rect.bottom + window.scrollY}px`;
+      dropdown.style.left = `${rect.left + window.scrollX}px`;
 
-  dropdown.classList.add('show');
-});
+      dropdown.classList.add('show');
+    });
 
     const tabContents = {
       overview:
@@ -295,6 +351,25 @@ document.addEventListener('click', function (event) {
       <div class="account-worth">
         <h3>Total Account Balance</h3>
         <p id="total-balance">$0.00</p>
+      </div>
+      <div class="account-transfer">
+        <h3>Make a Transaction</h3>
+        
+        <form id="transferForm" class="transfer-form">
+          <label for="fromAccount">From Account:</label>
+          <select id="fromAccount" name="fromAccount">
+              <option value="Main">Main</option>
+              <!-- Add other account options here -->
+          </select>
+          <br>
+          <label for="toAccount">To Account:</label>
+          <input type="text" id="toAccount" name="toAccount" placeholder="Recipient account id">
+          <br>
+          <label for="amount">Amount:</label>
+          <input type="number" id="amount" name="amount" step="0.01" required>
+          <br>
+          <button type="submit">Transfer</button>
+      </form>
       </div>
       <div class="transactions">
       <h3>Recent Transactions</h3>
@@ -592,7 +667,7 @@ document.addEventListener('click', function (event) {
     });
 
     getAllStockData().then(data => {
-      console.log(data);
+      //console.log(data);
       displayStockData(data);
     });
 

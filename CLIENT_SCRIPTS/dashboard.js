@@ -22,20 +22,53 @@ document.addEventListener('DOMContentLoaded', function() {
         window.location.href = 'loginPage.html';
     } else {
         displayOverview(user);
+        populateAccountSelects(user);
     }
 
-    console.log(document);
+    //console.log(document);
     document.getElementById('overview').addEventListener('click', function() {
         setActiveTab('overview', user);
     });
 
     document.getElementById('accounts').addEventListener('click', function() {
-        console.log('goob');
+        //console.log('goob');
         setActiveTab('accounts', user);
     });
 
-    populateTransactionsList(user);
-    setActiveTab(activeTab, user);
+    const fromAccountSelect = document.getElementById('fromAccount');
+    const toAccountSelect = document.getElementById('toAccount');
+
+    if (fromAccountSelect) {
+        fromAccountSelect.addEventListener('change', function () {
+            console.log('Selected fromAccount:', this.value);
+        });
+    }
+
+    if (toAccountSelect) {
+        toAccountSelect.addEventListener('change', function () {
+            console.log('Selected toAccount:', this.value);
+        });
+    }
+
+    document.getElementById('transferForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const fromAccount = fromAccountSelect.value;
+        const toAccount = toAccountSelect.value;
+        const amount = parseFloat(document.getElementById('amount').value);
+
+        if (isNaN(amount) || amount <= 0) {
+            alert("Invalid amount. Please enter a positive number.");
+            return;
+        }
+
+        console.log("Transferring:", user.id, fromAccount, toAccount, amount);
+        transfer(user.id, fromAccount, toAccount, amount);
+
+        this.reset();
+    });
+
+
     
     // Deposit
     //deposit(user, "Main", 3450187239591293985.192);
@@ -48,7 +81,30 @@ document.addEventListener('DOMContentLoaded', function() {
 
     //transfer("christofferschjodt@gmail.com", "christofferdamrong@gmail.com", 75);
 
+    populateTransactionsList(user);
 });
+
+function populateAccountSelects(user) {
+    const fromAccountSelect = document.getElementById('fromAccount');
+    const toAccountSelect = document.getElementById('toAccount');
+
+    if (!fromAccountSelect || !toAccountSelect) return;
+
+    fromAccountSelect.innerHTML = '';
+    toAccountSelect.innerHTML = '';
+
+    Object.entries(user.accounts).forEach(([accountName, _]) => {
+        const optionFrom = document.createElement('option');
+        optionFrom.value = accountName;
+        optionFrom.textContent = accountName;
+        fromAccountSelect.appendChild(optionFrom);
+
+        const optionTo = document.createElement('option');
+        optionTo.value = accountName;
+        optionTo.textContent = accountName;
+        toAccountSelect.appendChild(optionTo);
+    });
+}
 
 function displayOverview(user) {
     const content = document.querySelector('.tab-content');
@@ -122,7 +178,7 @@ function populateTransactionsList(user) {
 
             // Reverse so most recent appear first
             account.transactions.slice().reverse().forEach(tx => {
-                console.log("Processing transaction:", tx);
+                //console.log("Processing transaction:", tx);
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${formatDate(tx.date)}</td>
@@ -226,6 +282,7 @@ function formatDate(dateStr) {
 
 function setActiveTab(section, user) {
     currentSection = section;
+    activeTab = currentSection;
 
     if (!user) {
         user = User.getLoggedInUser();
@@ -237,17 +294,17 @@ function setActiveTab(section, user) {
         return;
     }
 
-    if (section === "overview") {
+    if (section == "overview") {
         //document.innerHTML = tabContents.overview;
         displayOverview(user);
     }
 
-    if (section === "accounts") {
+    if (section == "accounts") {
         document.innerHTML = tabContents.accounts;
         renderAccountsTable(user);
     }
 
-    if (section === "investments") {
+    if (section == "investments") {
         setTimeout(() => {
             const select = document.getElementById("stockSelect");
             renderChart(select.value);
@@ -255,5 +312,5 @@ function setActiveTab(section, user) {
         }, 0);
     }
 
-    activeTab = section;
+    populateTransactionsList(user);
 }

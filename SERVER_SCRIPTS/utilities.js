@@ -194,7 +194,8 @@ function transfer(fromId, fromAccountName, toId, amount) {
     localStorage.setItem("users", JSON.stringify(users));
 
     setActiveTab(activeTab, user);
-    populateTransactionsList(user)
+    populateTransactionsList(user);
+    location.reload();
 
     console.log(`Transferred ${amount} from ${fromUser.id} ${fromUser.profile.name} ${fromAccountName} to ${toUser.id} ${toUser.profile.name}.`);
 }

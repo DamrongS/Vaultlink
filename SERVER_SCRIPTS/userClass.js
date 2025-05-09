@@ -203,7 +203,7 @@ class User {
 
     const transactionFrom = {
       type: "withdrawal",
-      amount: amount,
+      amount: -amount,
       date: Date.now(),
       description: `Transfer to ${toAccountName}`
     };
