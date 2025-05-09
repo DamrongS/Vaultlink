@@ -56,6 +56,7 @@ class User {
 
   static logout() {
     localStorage.removeItem("loggedInUserId");
+    window.location.href = 'loginPage.html';
   }
 
   static getLoggedInUser() {
@@ -211,8 +212,6 @@ class User {
     alert(`Successfully transferred ${amount} from ${fromAccountName} to ${toAccountName}.`);
   }
   
-  
-
   updateAccountTable() {
     const accountBody = document.getElementById('account-body');
     accountBody.innerHTML = ''; // Clear current content

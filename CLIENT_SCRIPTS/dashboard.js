@@ -68,7 +68,10 @@ document.addEventListener('DOMContentLoaded', function() {
         this.reset();
     });
 
-
+    document.getElementById('logoutButton').addEventListener('click', function(e) {
+        e.preventDefault();
+        User.logout();
+    });
     
     // Deposit
     //deposit(user, "Main", 3450187239591293985.192);
