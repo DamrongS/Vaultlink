@@ -20,7 +20,7 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
     console.log("Number of users found:", users.length);
 
     // Find the user
-    const user = users.find(u => u.email === emailElement.value.toLowerCase());
+    const user = users.find(u => u.profile.email.toLowerCase() === emailElement.value.toLowerCase());
     console.log("User found:", user);
 
     if (!user) {
@@ -40,6 +40,8 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
     
     // Compare hashed passwords
     if (enteredPasswordHash !== user.password) {
+        console.log(enteredPasswordHash);
+        console.log(user.password);
         showError(passwordElement, 'Incorrect password.');
         return;
     }

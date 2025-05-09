@@ -46,7 +46,10 @@ class User {
 
   static login(email, password) {
     const user = User.findByEmail(email);
-    if (user && password === user.password) {
+    console.log(user);
+    if (!user) {
+      showError(passwordElement, 'no user registered with given email adress.');
+    } else if (user && password === user.password) {
       localStorage.setItem('loggedInUserId', user.id);
       window.location.href = 'vaultlinkDashboard.html';
     } else {
