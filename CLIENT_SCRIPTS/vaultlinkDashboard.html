@@ -332,7 +332,7 @@
     <button style='margin-top: 5px;background-color:blue; color:white' onclick="user.transferMoney('${account.name}')">Transfer money</button>
     <button style='margin-top: 5px;background-color:red; color:white' onclick="user.deleteAccount('${account.name}')">Delete account</button>
   `;
-
+  
       // Positionér dropdown ved knappen
       const rect = button.getBoundingClientRect();
       dropdown.style.top = `${rect.bottom + window.scrollY}px`;

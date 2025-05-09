@@ -116,7 +116,6 @@ class User {
   }
 
   deleteAccount(accountName) {
-
     if (confirm(`Delete account with name: ${accountName}?`))
     {
       let accountKey = Object.keys(this.accounts).find(key => this.accounts[key].name === accountName);
